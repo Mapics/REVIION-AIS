@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Révisions soutenance - FreeMotions</title>
+<style>
+:root{
+  --ink:#16242a; --soft:#5a6b72; --line:#dbe5e7; --bg:#f6f9f9; --card:#fff;
+  --teal:#0f766e; --teal-d:#0b3f3b; --teal-l:#e8f4f1; --warn:#9a3412; --warn-l:#fdf3ec;
+  --ok:#15803d; --ok-l:#eaf6ee; --bad:#b91c1c; --bad-l:#fdecec;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:86px}
+body{margin:0;background:var(--bg);color:var(--ink);
+     font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--teal)}
+.wrap{max-width:1000px;margin:0 auto;padding:0 18px}
+
+header{background:var(--teal-d);color:#fff;padding:30px 0 24px}
+header h1{margin:0;font-size:26px;letter-spacing:-.01em}
+header p{margin:6px 0 0;color:#b9d6d1;font-size:15px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.stat{background:rgba(255,255,255,.1);border-radius:6px;padding:8px 13px;font-size:14px}
+.stat b{font-size:18px}
+
+nav.bar{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--line)}
+nav.bar .wrap{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding-top:9px;padding-bottom:9px}
+nav.bar a{color:var(--soft);text-decoration:none;font-size:13.5px;padding:5px 9px;border-radius:5px;white-space:nowrap}
+nav.bar a:hover{background:var(--teal-l);color:var(--teal-d)}
+#q{flex:1;min-width:170px;padding:7px 11px;border:1px solid var(--line);border-radius:6px;font-size:14px;font-family:inherit}
+
+section{padding:34px 0 8px}
+h2{font-size:21px;margin:0 0 4px;letter-spacing:-.01em}
+h2 .n{color:var(--teal);font-variant-numeric:tabular-nums;margin-right:9px}
+.lead{color:var(--soft);margin:0 0 18px;font-size:15px}
+h3{font-size:16px;margin:26px 0 10px;color:var(--teal-d)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:12px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:13px 15px}
+.kpi b{display:block;font-size:20px;color:var(--teal-d)}
+.kpi span{font-size:13.5px;color:var(--soft)}
+
+.qa{background:var(--card);border:1px solid var(--line);border-radius:8px;margin-bottom:9px;overflow:hidden}
+.qa>summary{cursor:pointer;padding:13px 16px;font-weight:600;list-style:none;display:flex;gap:11px;align-items:flex-start}
+.qa>summary::-webkit-details-marker{display:none}
+.qa>summary::before{content:"+";color:var(--teal);font-weight:700;flex:0 0 13px}
+.qa[open]>summary::before{content:"\2212"}
+.qa>summary:hover{background:var(--teal-l)}
+.qa .a{padding:0 16px 15px 40px;color:#2b3b41;border-top:1px solid var(--line);padding-top:13px;margin-top:0}
+.qa .a p{margin:0 0 9px}
+.qa .a ul{margin:0 0 9px;padding-left:19px}
+.tag{font-size:11px;font-weight:700;letter-spacing:.04em;padding:2px 7px;border-radius:4px;margin-left:auto;flex:0 0 auto}
+.t-piege{background:var(--warn-l);color:var(--warn)}
+.t-base{background:var(--teal-l);color:var(--teal-d)}
+.t-chiffre{background:#eef2ff;color:#3730a3}
+
+.def{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 15px;margin-bottom:8px}
+.def b{color:var(--teal-d)}
+.def span{color:#2b3b41}
+
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);
+      border-radius:8px;overflow:hidden;font-size:14.5px}
+th{background:var(--teal-d);color:#fff;text-align:left;padding:9px 12px;font-size:13.5px}
+td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+
+.quiz{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:15px 17px;margin-bottom:11px}
+.quiz p{margin:0 0 11px;font-weight:600}
+.opt{display:block;width:100%;text-align:left;background:#fbfdfd;border:1px solid var(--line);border-radius:6px;
+     padding:9px 12px;margin-bottom:6px;cursor:pointer;font:inherit;font-size:14.5px;color:inherit}
+.opt:hover{border-color:var(--teal)}
+.opt.ok{background:var(--ok-l);border-color:var(--ok);color:var(--ok);font-weight:600}
+.opt.bad{background:var(--bad-l);border-color:var(--bad);color:var(--bad)}
+.why{display:none;margin-top:9px;font-size:14px;color:var(--soft);border-top:1px dashed var(--line);padding-top:9px}
+.why.show{display:block}
+
+.flag{background:var(--warn-l);border:1px solid #f0d9c4;border-radius:8px;padding:13px 16px;margin:12px 0;font-size:15px}
+.flag b{color:var(--warn)}
+.tools{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.btn{background:#fff;border:1px solid var(--line);border-radius:6px;padding:6px 12px;font:inherit;font-size:13.5px;
+     cursor:pointer;color:var(--soft)}
+.btn:hover{border-color:var(--teal);color:var(--teal-d)}
+footer{padding:40px 0 60px;color:var(--soft);font-size:13.5px}
+mark{background:#fff3b0}
+
+.def .use{display:block;margin-top:5px;color:var(--soft);font-size:14.5px}
+.def i{color:var(--soft);font-style:normal;font-size:14.5px}
+.concept{background:#f0f8f5;border:1px solid #bcdcd2;border-radius:8px;padding:14px 17px;margin-bottom:10px}
+.concept .chip{display:inline-block;background:var(--teal);color:#fff;font-size:11px;font-weight:700;
+  letter-spacing:.03em;border-radius:4px;padding:2px 8px;margin-bottom:7px}
+.concept b{display:block;color:var(--teal-d);font-size:16px;margin-bottom:5px}
+.concept p{margin:0;color:#24353b}
+
+/* --- plan de révision --- */
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.plan .day{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:13px 15px}
+.plan h4{margin:0 0 9px;font-size:14px;color:var(--teal-d)}
+.plan label{display:flex;gap:9px;align-items:flex-start;font-size:14.5px;padding:6px 0;cursor:pointer;color:#2b3b41}
+.plan input{margin-top:3px;width:17px;height:17px;flex:0 0 auto;accent-color:var(--teal)}
+.plan label.ok{color:var(--soft);text-decoration:line-through}
+
+/* --- progression --- */
+.prog{height:6px;background:rgba(255,255,255,.18);border-radius:4px;overflow:hidden;margin-top:14px}
+.prog i{display:block;height:100%;background:#5eead4;width:0;transition:width .25s}
+.su{flex:0 0 auto;width:20px;height:20px;border:1px solid var(--line);border-radius:5px;background:#fff;
+    cursor:pointer;font-size:12px;line-height:18px;text-align:center;color:transparent;padding:0}
+.su.on{background:var(--teal);border-color:var(--teal);color:#fff}
+details.qa[data-su="1"]>summary{opacity:.55}
+
+/* --- mode flash --- */
+.flashbtn{position:fixed;right:16px;bottom:16px;z-index:60;background:var(--teal);color:#fff;border:none;
+  border-radius:28px;padding:13px 20px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;
+  box-shadow:0 4px 14px rgba(15,118,110,.35)}
+#flash{position:fixed;inset:0;background:rgba(10,30,32,.93);z-index:70;display:none;padding:18px;
+  overflow-y:auto;-webkit-overflow-scrolling:touch}
+#flash.on{display:block}
+.fcard{background:#fff;border-radius:10px;max-width:720px;margin:24px auto;padding:20px}
+.fcard .fq{font-size:19px;font-weight:600;margin:0 0 14px}
+.fcard .fa{display:none;border-top:1px solid var(--line);padding-top:13px;color:#2b3b41}
+.fcard .fa.on{display:block}
+.frow{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.frow button{flex:1 1 140px;padding:12px;border-radius:8px;border:1px solid var(--line);background:#fff;
+  font:inherit;font-size:15px;cursor:pointer}
+.frow .ok{background:var(--teal);color:#fff;border-color:var(--teal)}
+.fmeta{color:var(--soft);font-size:13px;text-align:center;margin-top:10px}
+.fclose{position:fixed;top:12px;right:14px;background:none;border:none;color:#fff;font-size:28px;cursor:pointer}
+
+/* --- téléphone --- */
+@media (max-width:720px){
+  html{scroll-padding-top:120px}
+  body{font-size:15.5px}
+  .wrap{padding:0 13px}
+  header{padding:20px 0 16px}
+  header h1{font-size:20px}
+  header p{font-size:13.5px}
+  .stats{gap:7px;margin-top:12px}
+  .stat{padding:6px 10px;font-size:12.5px}
+  .stat b{font-size:15px}
+  nav.bar .wrap{padding-top:7px;padding-bottom:7px;gap:4px}
+  #q{min-width:100%;order:-1;font-size:16px;padding:9px 11px}
+  nav.bar .links{display:flex;gap:4px;overflow-x:auto;width:100%;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+  nav.bar .links::-webkit-scrollbar{display:none}
+  nav.bar a{font-size:13px;padding:6px 10px;background:var(--bg);border-radius:14px}
+  section{padding:24px 0 6px}
+  h2{font-size:18.5px}
+  h3{font-size:15px;margin:20px 0 8px}
+  .grid{grid-template-columns:1fr 1fr;gap:9px}
+  .kpi{padding:10px 11px}
+  .kpi b{font-size:16px}
+  .kpi span{font-size:12.5px}
+  .qa>summary{padding:12px 13px;font-size:15px}
+  .qa .a{padding:12px 13px 14px 13px}
+  .def,.concept{padding:11px 13px}
+  .tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tblwrap table{min-width:540px}
+  .opt{padding:11px 12px}
+  .flashbtn{left:13px;right:13px;bottom:13px;border-radius:12px;text-align:center}
+  footer{padding-bottom:96px}
+}
+@media print{nav.bar{display:none}.qa .a{display:block!important}.qa>summary::before{content:""}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>Soutenance FreeMotions - fiche de révision</h1>
+    <p>Titre professionnel Administrateur d'infrastructures sécurisées (RNCP 37680) · Matt Nadjar</p>
+    <div class="stats">
+      <div class="stat"><b id="nq">0</b> questions de jury</div>
+      <div class="stat"><b id="nd">0</b> sigles</div>
+      <div class="stat"><b id="nc">0</b> concepts</div>
+      <div class="stat"><b id="nqcm">0</b> questions de QCM</div>
+      <div class="stat"><b id="score">0</b> au QCM</div>
+      <div class="stat"><b id="nsu">0</b> questions sues</div>
+    </div>
+    <div class="prog"><i id="progbar"></i></div>
+    </div>
+</header>
+
+<nav class="bar"><div class="wrap">
+  <input id="q" placeholder="Filtrer : tapez un mot (RADIUS, RPO, LXC, CARP...)">
+  <span class="links"><a href="#plan">Plan 2 j</a>
+  <a href="#express">Par cœur</a>
+  <a href="#fil">Le fil</a>
+  <a href="#gloss">Sigles &amp; concepts</a>
+  <a href="#jury">Questions</a>
+  <a href="#general">Général</a>
+  <a href="#qcm">QCM</a>
+  <a href="#pieges">Pièges</a>
+  <a href="#comp">Compétences</a></span>
+</div></nav>
+
+<div class="wrap">
+
+<!-- ====================================================== PLAN -->
+<section id="plan">
+  <h2><span class="n">00</span>Plan sur deux jours</h2>
+  <p class="lead">Coche au fur et à mesure, l'état est gardé sur cet appareil. L'ordre n'est pas arbitraire : on commence par ce qui se perd le plus vite, les chiffres, et on finit par ce qui se joue à l'oral.</p>
+  <div class="plan">
+    <div class="day"><h4>Jour 1 - matin · fixer les fondations</h4>
+      <label><input type="checkbox" data-plan="j1a"> <span>Lire la section <b>Par cœur</b> deux fois, puis la réciter sans regarder</span></label>
+      <label><input type="checkbox" data-plan="j1b"> <span>Passer le <b>QCM</b> une première fois, noter les ratés</span></label>
+      <label><input type="checkbox" data-plan="j1c"> <span>Relire les <b>sigles</b> en diagonale, marquer ceux qui ne tombent pas tout seuls</span></label>
+    </div>
+    <div class="day"><h4>Jour 1 - après-midi · le projet</h4>
+      <label><input type="checkbox" data-plan="j1d"> <span><b>Mode flash</b> sur les questions de jury, jusqu'à 100 % marquées « su »</span></label>
+      <label><input type="checkbox" data-plan="j1e"> <span>Lire les <b>concepts à comprendre</b> - c'est là que se jouent les questions de détail</span></label>
+      <label><input type="checkbox" data-plan="j1f"> <span>Dérouler le diaporama à voix haute, une fois, sans s'arrêter</span></label>
+    </div>
+    <div class="day"><h4>Jour 2 - matin · l'extérieur du projet</h4>
+      <label><input type="checkbox" data-plan="j2a"> <span>Section <b>Questions générales</b> : OSI, proxy, VLAN, niveau 2 et 3, 3-2-1</span></label>
+      <label><input type="checkbox" data-plan="j2b"> <span>Refaire le <b>QCM</b> en visant 20 sur 20</span></label>
+      <label><input type="checkbox" data-plan="j2c"> <span>Mode flash sur les questions marquées <b>PIÈGE</b> uniquement</span></label>
+    </div>
+    <div class="day"><h4>Jour 2 - après-midi · l'oral</h4>
+      <label><input type="checkbox" data-plan="j2d"> <span>Diaporama à voix haute avec le chronomètre</span></label>
+      <label><input type="checkbox" data-plan="j2e"> <span>Relire les <b>pièges et réflexes</b>, surtout quoi dire quand on ne sait pas</span></label>
+      <label><input type="checkbox" data-plan="j2f"> <span>Relire la phrase d'ouverture jusqu'à ce qu'elle sorte seule</span></label>
+    </div>
+  </div>
+  <div class="flag"><b>Le conseil qui revient de tous ceux qui sont passés :</b> le jury est composé de professionnels du métier. Dire « je ne sais pas, voilà comment je chercherais » passe très bien. Inventer passe très mal, et ils le voient immédiatement.</div>
+</section>
+
+<!-- ====================================================== EXPRESS -->
+<section id="express">
+  <h2><span class="n">01</span>Ce qui doit sortir sans réfléchir</h2>
+  <p class="lead">Si on te réveille à 3 h du matin, ces chiffres doivent tomber. Ce sont ceux que le jury peut vérifier dans le dossier.</p>
+  <div class="grid">
+    <div class="kpi"><b>50 salariés</b><span>40 à Paris, 10 à Lyon</span></div>
+    <div class="kpi"><b>15 M€</b><span>chiffre d'affaires de FreeMotions</span></div>
+    <div class="kpi"><b>4 réseaux</b><span>WAN 192.168.254.0/24 · LAN Paris 10.10.10.0/24 · DMZ 172.16.0.0/24 · LAN Lyon 10.20.20.0/24</span></div>
+    <div class="kpi"><b>UDP 1194</b><span>tunnel inter-sites, réseau 10.255.255.0/30</span></div>
+    <div class="kpi"><b>UDP 1195</b><span>accès nomade, adresses 10.8.0.0/24</span></div>
+    <div class="kpi"><b>443 et 2222</b><span>les deux seuls ports publiés vers la DMZ (172.16.0.20)</span></div>
+    <div class="kpi"><b>RPO 0 / RTO 5 min</b><span>reprise de la configuration du pare-feu</span></div>
+    <div class="kpi"><b>RPO 24 h / RTO 6 min</b><span>reprise des données du contrôleur de domaine</span></div>
+    <div class="kpi"><b>13 sur 14</b><span>tests de recette conformes</span></div>
+    <div class="kpi"><b>60 vers 20</b><span>score PingCastle avant / après</span></div>
+    <div class="kpi"><b>6 450 € HT</b><span>matériel : 3 Netgate 4200, 1 commutateur 48 ports, 2 de 24 ports</span></div>
+    <div class="kpi"><b>16 950 € HT</b><span>main d'œuvre, 30 jours</span></div>
+    <div class="kpi"><b>23 400 € HT</b><span>total du devis, soit 28 080 € TTC</span></div>
+    <div class="kpi"><b>512 Mo</b><span>mémoire du conteneur LXC de la zone exposée, contre 2 Go pour une VM</span></div>
+    <div class="kpi"><b>5 échecs</b><span>seuil de bannissement fail2ban sur le service publié</span></div>
+    <div class="kpi"><b>2 incidents</b><span>force brute sur le SFTP, reconnaissance réseau</span></div>
+  </div>
+
+  <h3>La phrase d'ouverture, à connaître mot pour mot</h3>
+  <div class="def"><span>« FreeMotions loue des véhicules électriques sur deux sites, Paris et Lyon. Leur système d'information repose sur des technologies qui ne seront plus maintenues : ils ne cherchent pas une mise à niveau, mais une refonte. J'ai pris en charge le périmètre réseau et sécurité : les deux pare-feu, l'interconnexion chiffrée, l'accès distant, la zone exposée, le filtrage, la détection d'intrusion, la journalisation, et l'audit final. »</span></div>
+
+  <h3>Les trois attentes du client</h3>
+  <div class="tblwrap"><table>
+    <tr><th style="width:26%">Attente</th><th>Ce que j'ai livré</th></tr>
+    <tr><td><b>Continuité</b></td><td>Lyon fonctionne seul, relié en permanence à Paris par un tunnel chiffré</td></tr>
+    <tr><td><b>Accès contrôlé</b></td><td>Ouverture aux revendeurs par une zone exposée cloisonnée, accès salariés par compte d'annuaire</td></tr>
+    <tr><td><b>Traçabilité</b></td><td>Journaux sortis des équipements, supervision active, audit documenté</td></tr>
+  </table></div>
+</section>
+
+<!-- ====================================================== LE FIL -->
+<section id="fil">
+  <h2><span class="n">02</span>Le fil de la soutenance</h2>
+  <p class="lead">Pour chaque partie : ce que je raconte, et la phrase qui doit rester. Les diapos sont citées par leur titre.</p>
+
+  <h3>Contexte</h3>
+  <details class="qa"><summary>FreeMotions · Un appel d'offres, trois attentes</summary><div class="a">
+    <p>Je plante l'entreprise en trois chiffres, puis je passe tout de suite à ce qui m'intéresse : les trois attentes et leur traduction technique. Je ne m'attarde pas, le jury connaît le dossier.</p>
+    <p><b>La phrase :</b> « Leur informatique doit se faire oublier : disponible, sûre, et simple pour ceux qui s'en servent. »</p>
+  </div></details>
+
+  <h3>Gestion de projet</h3>
+  <details class="qa"><summary>Dix lots, livrés dans l'ordre utile · Risques · Chiffrage · Le matériel · RACI</summary><div class="a">
+    <p>C'est la partie qui m'a coûté des points la première fois. J'y passe du temps : le planning, puis le chiffrage détaillé poste par poste, puis le RACI.</p>
+    <ul>
+      <li><b>Planning</b> : dix lots sur neuf mois, qui se chevauchent. La règle d'ordonnancement : ce qui débloque le reste passe en premier.</li>
+      <li><b>Risques</b> : trois se sont réalisés. Le plus intéressant est celui que je n'avais pas vu, la sécurité qui se retourne contre son administrateur.</li>
+      <li><b>Chiffrage</b> : deux grands chiffres, puis le détail par modèle avec les équivalents acceptables.</li>
+      <li><b>RACI</b> : il ne sert pas à désigner un responsable, il sert à repérer les deux frontières entre périmètres.</li>
+    </ul>
+    <p><b>La phrase :</b> « Une brique non déployée devient un livrable : le client sait ce qu'elle coûterait et ce qu'elle apporterait. »</p>
+  </div></details>
+
+  <h3>Conception</h3>
+  <details class="qa"><summary>Cinq principes · Architecture avant / cible · Matrice de flux · Choix argumentés · Décider de ne pas déployer</summary><div class="a">
+    <p>Je montre le point de départ (un réseau plat), puis la cible, puis la matrice de flux qui en est la traduction en règles. J'enchaîne sur les comparatifs, et je termine par ce que j'ai écarté - c'est là que se joue la compétence de conception.</p>
+    <p><b>La phrase :</b> « Un schéma décrit des chemins, pas des droits. Les droits sont dans la matrice de flux. »</p>
+  </div></details>
+
+  <h3>Réalisations</h3>
+  <details class="qa"><summary>Pare-feu · Tunnel · Sauvegarde et restauration · Accès nomade · DC1 · Filtrage · IPS · DMZ · LXC · Journaux · Zabbix</summary><div class="a">
+    <p>Chaque brique suit le même déroulé en trois temps : <b>le besoin</b>, <b>ce que j'ai fait</b>, <b>la preuve à l'écran</b>. Je ne lis pas la diapo, je commente la capture.</p>
+    <p>Les deux moments forts : la restauration réellement effectuée (6 minutes mesurées) et le choix du conteneur LXC, parce que ce sont deux endroits où j'assume un compromis au lieu de réciter une installation.</p>
+    <p><b>La phrase :</b> « Une sauvegarde qui n'a jamais été restaurée n'est pas une sauvegarde, c'est une hypothèse. »</p>
+  </div></details>
+
+  <h3>Recette, cybersécurité, bilan</h3>
+  <details class="qa"><summary>Cahier de recette · Audit · Constats · PingCastle · Incidents · Ce qui est livré</summary><div class="a">
+    <p>La recette d'abord : chaque test exécuté depuis l'endroit où se trouve vraiment l'utilisateur. Puis l'audit, avec le cadrage écrit avant le premier scan. Puis les deux incidents, traités selon le même déroulé : détection, qualification, confinement, éradication, retour à la normale, retour d'expérience.</p>
+    <p><b>La phrase :</b> « Un audit sans périmètre écrit, ce n'est pas un audit, c'est une intrusion. »</p>
+  </div></details>
+</section>
+
+<!-- ====================================================== GLOSSAIRE -->
+<section id="gloss">
+  <h2><span class="n">03</span>Sigles et concepts</h2>
+  <p class="lead">Tout ce qui peut faire l'objet d'un « c'est quoi exactement ? ». Les sigles d'abord, le développé puis la définition puis l'usage que j'en ai fait. Les encadrés verts expliquent le <b>pourquoi</b> et le <b>comment</b> : ce sont les questions de détail du jury.</p>
+  <h3>Tous les sigles, de A à Z</h3>
+  <div class="def"><b>802.1X</b> <i>IEEE 802.1X</i><br><span>Authentification d'un équipement au moment où il se branche sur un port réseau, avant même d'obtenir une adresse.</span><br><span class="use">Chez moi : Non déployé. À citer si on me demande comment aller plus loin que le filtrage par adresse.</span></div>
+  <div class="def"><b>AD</b> <i>Active Directory</i><br><span>Annuaire de Microsoft : il centralise les comptes, les machines et les groupes d'un domaine, et sert de référence d'authentification.</span><br><span class="use">Chez moi : C'est la base de comptes que le pare-feu interroge pour les accès nomades.</span></div>
+  <div class="def"><b>AES-256-GCM</b> <i>Advanced Encryption Standard, 256 bits, Galois/Counter Mode</i><br><span>Algorithme de chiffrement symétrique. Le mode GCM chiffre et vérifie l'intégrité en une seule opération : un paquet modifié est rejeté.</span><br><span class="use">Chez moi : Chiffrement négocié par le tunnel OpenVPN entre Paris et Lyon.</span></div>
+  <div class="def"><b>AIS</b> <i>Administrateur d'infrastructures sécurisées</i><br><span>Le titre professionnel visé, de niveau 6 (bac+3/4), délivré par le ministère chargé de l'emploi.</span><br><span class="use">Chez moi : Code TP-01352, fiche RNCP 37680.</span></div>
+  <div class="def"><b>AT</b> <i>Activité-type</i><br><span>Regroupement de compétences dans un référentiel de titre professionnel. Le titre AIS en compte trois.</span><br><span class="use">Chez moi : Structure du dossier professionnel : trois activités-types, trois exemples chacune.</span></div>
+  <div class="def"><b>CA</b> <i>Certificate Authority / autorité de certification</i><br><span>Entité qui signe des certificats. Sa signature est ce qui permet à un tiers de vérifier qu'un certificat est authentique.</span><br><span class="use">Chez moi : Créée sur le pare-feu du siège ; elle signe le certificat du serveur VPN et ceux des clients.</span></div>
+  <div class="def"><b>CARP</b> <i>Common Address Redundancy Protocol</i><br><span>Protocole qui permet à plusieurs équipements de partager une même adresse IP virtuelle. Si l'actif tombe, le passif reprend l'adresse.</span><br><span class="use">Chez moi : Second pare-feu par site : conçu, chiffré à 3 jours plus matériel, non déployé.</span></div>
+  <div class="def"><b>CBS350</b> <i>Cisco Business Switch série 350</i><br><span>Gamme de commutateurs administrables pour PME, avec PoE+ et liaisons 10 Gb/s.</span><br><span class="use">Chez moi : Cité comme équivalent acceptable aux commutateurs Aruba dans le devis.</span></div>
+  <div class="def"><b>CP</b> <i>Compétence professionnelle</i><br><span>Unité élémentaire du référentiel : dix pour le titre AIS, numérotées C1 à C10.</span><br><span class="use">Chez moi : Colonne du tableau récapitulatif, en tête du dossier.</span></div>
+  <div class="def"><b>CVSS</b> <i>Common Vulnerability Scoring System</i><br><span>Échelle standard, de 0 à 10, qui note la gravité d'une vulnérabilité à partir de critères objectifs : vecteur d'attaque, complexité, impact.</span><br><span class="use">Chez moi : La criticité des constats d'audit est évaluée dans cet esprit : exposition du service et sensibilité de ce qu'il protège.</span></div>
+  <div class="def"><b>CX 6100</b> <i>Aruba CX série 6100</i><br><span>Gamme de commutateurs administrables de HPE Aruba, en 24 ou 48 ports, avec alimentation par le câble.</span><br><span class="use">Chez moi : Références JL675A (48 ports) et JL677A (24 ports) au devis.</span></div>
+  <div class="def"><b>DC / DC1</b> <i>Domain Controller / contrôleur de domaine</i><br><span>Serveur qui héberge l'annuaire d'un domaine, répond aux demandes d'authentification et distribue les stratégies.</span><br><span class="use">Chez moi : DC1 est le contrôleur du siège. J'y ai installé le rôle de serveur d'authentification réseau.</span></div>
+  <div class="def"><b>DH</b> <i>Diffie-Hellman</i><br><span>Méthode d'échange de clés : deux machines obtiennent une clé commune sans jamais la transmettre sur le réseau.</span><br><span class="use">Chez moi : Paramètres DH de 2048 bits dans la configuration du tunnel.</span></div>
+  <div class="def"><b>DHCP</b> <i>Dynamic Host Configuration Protocol</i><br><span>Protocole qui attribue automatiquement une adresse IP, une passerelle et un serveur DNS à une machine qui démarre.</span><br><span class="use">Chez moi : Étendue locale sur chaque site ; les postes de Lyon reçoivent 10.20.20.50 à .200.</span></div>
+  <div class="def"><b>DMZ</b> <i>Demilitarized Zone / zone démilitarisée</i><br><span>Réseau séparé qui héberge les services joignables depuis Internet, sans aucun chemin vers le réseau interne.</span><br><span class="use">Chez moi : 172.16.0.0/24, avec l'Extranet et le service de transfert de fichiers.</span></div>
+  <div class="def"><b>DNS</b> <i>Domain Name System</i><br><span>Service qui traduit un nom en adresse IP. Sans lui, presque rien ne fonctionne, y compris l'authentification du domaine.</span><br><span class="use">Chez moi : Le contrôleur de domaine reste le résolveur du parc : c'est pour ça que le filtrage web par catégories a été écarté.</span></div>
+  <div class="def"><b>ET Open</b> <i>Emerging Threats Open</i><br><span>Jeu public et gratuit de signatures de détection d'intrusion, mis à jour en continu par la communauté.</span><br><span class="use">Chez moi : Jeu de règles chargé dans Snort, mis à jour deux fois par jour.</span></div>
+  <div class="def"><b>FTPS</b> <i>File Transfer Protocol over SSL/TLS</i><br><span>Transfert de fichiers classique auquel on ajoute du chiffrement. Il ouvre une connexion de commande et une plage de ports pour les données.</span><br><span class="use">Chez moi : Écarté au profit du SFTP, qui ne demande qu'un seul port à publier.</span></div>
+  <div class="def"><b>GPO</b> <i>Group Policy Object / stratégie de groupe</i><br><span>Paquet de réglages appliqué automatiquement aux machines ou aux utilisateurs d'un domaine.</span><br><span class="use">Chez moi : Cité dans le durcissement de l'annuaire, côté périmètre systèmes.</span></div>
+  <div class="def"><b>GTR</b> <i>Garantie de temps de rétablissement</i><br><span>Engagement contractuel de l'opérateur sur le délai de remise en service après une panne. Ce n'est pas un délai d'intervention, c'est un délai de rétablissement.</span><br><span class="use">Chez moi : GTR 4 h sur la fibre dédiée des deux sites, au devis.</span></div>
+  <div class="def"><b>HA</b> <i>Haute disponibilité</i><br><span>Capacité d'un service à rester accessible malgré la panne d'un composant, par redondance.</span><br><span class="use">Chez moi : Objectif du second pare-feu en CARP, écarté puis chiffré.</span></div>
+  <div class="def"><b>HETIC</b> <i>(nom d'école)</i><br><span>École du numérique et du marketing, où j'ai fait ma première année avant d'intégrer l'IPSSI.</span><br><span class="use">Chez moi : Diapositive de parcours, en ouverture.</span></div>
+  <div class="def"><b>HPE</b> <i>Hewlett Packard Enterprise</i><br><span>Constructeur, propriétaire de la marque Aruba pour les équipements réseau.</span><br><span class="use">Chez moi : Commutateurs Aruba CX 6100 retenus au devis.</span></div>
+  <div class="def"><b>HT / TTC / TVA</b> <i>Hors taxes / toutes taxes comprises / taxe sur la valeur ajoutée</i><br><span>Un devis professionnel s'exprime hors taxes, parce que l'entreprise récupère la TVA : seul le HT représente son coût réel.</span><br><span class="use">Chez moi : 23 400 € HT, TVA 20 %, 28 080 € TTC.</span></div>
+  <div class="def"><b>HTTP / HTTPS</b> <i>HyperText Transfer Protocol (Secure)</i><br><span>Protocole du web. La variante sécurisée transporte les échanges dans un tunnel TLS : chiffrement et authentification du serveur.</span><br><span class="use">Chez moi : L'Extranet n'est servi qu'en HTTPS ; le trafic en clair est redirigé.</span></div>
+  <div class="def"><b>IDS</b> <i>Intrusion Detection System</i><br><span>Système qui analyse le trafic et signale ce qui correspond à une signature d'attaque, sans intervenir.</span><br><span class="use">Chez moi : Mode utilisé au début, avant de basculer en blocage.</span></div>
+  <div class="def"><b>IP fixe</b> <i>Adresse IP fixe</i><br><span>Adresse publique attribuée durablement à un abonnement, par opposition à une adresse qui change.</span><br><span class="use">Chez moi : Indispensable pour publier un service et pour restreindre l'ouverture du pare-feu à une source connue.</span></div>
+  <div class="def"><b>IPS</b> <i>Intrusion Prevention System</i><br><span>Même analyse qu'un IDS, mais il agit : la source est bloquée automatiquement.</span><br><span class="use">Chez moi : Snort en mode blocage sur l'interface interne. C'est lui qui a banni mes propres scans d'audit.</span></div>
+  <div class="def"><b>IPsec</b> <i>Internet Protocol Security</i><br><span>Suite de protocoles de VPN intégrée au système, souvent plus rapide qu'OpenVPN mais plus rigide à traverser et à dépanner.</span><br><span class="use">Chez moi : Comparé puis écarté : un seul outil pour les deux usages était préférable.</span></div>
+  <div class="def"><b>IPSSI</b> <i>(nom d'école)</i><br><span>L'établissement où je prépare le titre, et qui joue le rôle du client dans la mise en situation.</span><br><span class="use">Chez moi : Pierre-Yves Poirier, référent pédagogique, tient le rôle du client.</span></div>
+  <div class="def"><b>JSON / XML</b> <i>JavaScript Object Notation / eXtensible Markup Language</i><br><span>Deux formats de fichiers structurés, lisibles par un programme comme par un humain.</span><br><span class="use">Chez moi : Format des exports de configuration et des rapports d'audit.</span></div>
+  <div class="def"><b>KVM</b> <i>Kernel-based Virtual Machine</i><br><span>Le moteur de virtualisation intégré au noyau Linux, utilisé par Proxmox pour les machines virtuelles complètes.</span><br><span class="use">Chez moi : Les pare-feu et serveurs tournent en KVM ; la zone exposée, en conteneur.</span></div>
+  <div class="def"><b>LAN</b> <i>Local Area Network</i><br><span>Réseau local d'un site, derrière le pare-feu.</span><br><span class="use">Chez moi : 10.10.10.0/24 à Paris, 10.20.20.0/24 à Lyon.</span></div>
+  <div class="def"><b>LXC</b> <i>Linux Containers</i><br><span>Technologie d'isolation au niveau du système : plusieurs environnements séparés partagent le noyau de la machine hôte.</span><br><span class="use">Chez moi : Le conteneur Debian 12 de la zone exposée, 512 Mo.</span></div>
+  <div class="def"><b>MFA</b> <i>Multi-Factor Authentication</i><br><span>Authentification à plusieurs facteurs : quelque chose que l'on sait, que l'on possède, ou que l'on est.</span><br><span class="use">Chez moi : Évolution recommandée : l'accès nomade repose aujourd'hui sur un seul facteur.</span></div>
+  <div class="def"><b>NAT</b> <i>Network Address Translation</i><br><span>Réécriture des adresses dans les paquets. En sortie, tout un réseau emprunte une seule adresse publique ; en entrée, un port public est redirigé vers un serveur précis.</span><br><span class="use">Chez moi : NAT sortant pour les réseaux internes, redirections 443 et 2222 vers 172.16.0.20.</span></div>
+  <div class="def"><b>NETLOGON / SYSVOL</b> <i>Partages système d'un contrôleur de domaine</i><br><span>Deux partages réseau obligatoires d'un domaine : ils distribuent les scripts d'ouverture de session et les stratégies de groupe.</span><br><span class="use">Chez moi : Durcissement de leurs droits lors de la remédiation d'annuaire.</span></div>
+  <div class="def"><b>NPS</b> <i>Network Policy Server</i><br><span>Le service Windows qui joue le rôle de serveur RADIUS, avec des stratégies conditionnelles.</span><br><span class="use">Chez moi : Installé sur DC1, il décide qui a le droit d'ouvrir le VPN nomade.</span></div>
+  <div class="def"><b>NTLM</b> <i>NT LAN Manager</i><br><span>Ancien protocole d'authentification Windows, conservé pour compatibilité mais plus faible que Kerberos.</span><br><span class="use">Chez moi : Cité dans les constats de durcissement de l'annuaire.</span></div>
+  <div class="def"><b>OpenVPN</b> <i>(nom de produit)</i><br><span>Solution de VPN libre, qui fonctionne aussi bien en tunnel permanent entre deux sites qu'en accès distant pour un poste isolé.</span><br><span class="use">Chez moi : Les deux usages du projet : UDP 1194 entre sites, UDP 1195 pour les nomades.</span></div>
+  <div class="def"><b>PME</b> <i>Petite ou moyenne entreprise</i><br><span>Entreprise de moins de 250 salariés. Le dimensionnement et les arbitrages de coût en dépendent directement.</span><br><span class="use">Chez moi : FreeMotions, 50 salariés.</span></div>
+  <div class="def"><b>PoE / PoE+</b> <i>Power over Ethernet</i><br><span>Alimentation électrique transportée par le câble réseau. La variante PoE+ fournit jusqu'à 30 W par port.</span><br><span class="use">Chez moi : Commutateurs PoE+ au devis, pour alimenter téléphones, bornes et caméras sans prise supplémentaire.</span></div>
+  <div class="def"><b>PRA / PCA</b> <i>Plan de reprise / de continuité d'activité</i><br><span>Le PRA décrit comment on redémarre après un sinistre ; le PCA, comment on continue sans s'arrêter. Le second coûte beaucoup plus cher.</span><br><span class="use">Chez moi : Les mesures RPO et RTO sont les indicateurs du PRA.</span></div>
+  <div class="def"><b>PRS BAI 26.3</b> <i>(code de promotion)</i><br><span>Identifiant de la promotion à l'IPSSI.</span><br><span class="use">Chez moi : Figure sur la page de garde du dossier.</span></div>
+  <div class="def"><b>RACI</b> <i>Responsible, Accountable, Consulted, Informed</i><br><span>Matrice qui répartit les rôles sur chaque activité : qui réalise, qui approuve, qui est consulté, qui est informé.</span><br><span class="use">Chez moi : Huit activités réparties entre moi, l'équipe et le client.</span></div>
+  <div class="def"><b>RADIUS</b> <i>Remote Authentication Dial-In User Service</i><br><span>Protocole qui permet à un équipement réseau de déléguer l'authentification à un serveur central. Ports UDP 1812 (authentification) et 1813 (comptabilité).</span><br><span class="use">Chez moi : Le pare-feu relaie les identifiants vers DC1 et applique la réponse.</span></div>
+  <div class="def"><b>RNCP</b> <i>Répertoire national des certifications professionnelles</i><br><span>Registre public des certifications reconnues par l'État. Un titre y est inscrit avec un numéro et un niveau.</span><br><span class="use">Chez moi : Le titre AIS est la fiche RNCP 37680, niveau 6.</span></div>
+  <div class="def"><b>RPO</b> <i>Recovery Point Objective</i><br><span>Quantité de données que l'on accepte de perdre, exprimée en temps : l'écart entre le sinistre et la dernière sauvegarde utilisable.</span><br><span class="use">Chez moi : 0 pour la configuration du pare-feu, jusqu'à 24 h pour les données du serveur.</span></div>
+  <div class="def"><b>RTO</b> <i>Recovery Time Objective</i><br><span>Durée pendant laquelle le service reste indisponible, du sinistre au retour en production.</span><br><span class="use">Chez moi : 5 minutes pour le pare-feu, 6 minutes mesurées pour une restauration de fichiers.</span></div>
+  <div class="def"><b>SFTP</b> <i>SSH File Transfer Protocol</i><br><span>Transfert de fichiers encapsulé dans une session SSH : un seul port, chiffrement et authentification intégrés.</span><br><span class="use">Chez moi : Publié sur le port 2222, redirigé vers le 22 du conteneur, comptes enfermés dans leur dossier.</span></div>
+  <div class="def"><b>SHA-256</b> <i>Secure Hash Algorithm, 256 bits</i><br><span>Fonction d'empreinte : elle produit une signature de taille fixe qui change complètement au moindre octet modifié.</span><br><span class="use">Chez moi : Empreinte utilisée pour l'intégrité des échanges du tunnel.</span></div>
+  <div class="def"><b>SIEM</b> <i>Security Information and Event Management</i><br><span>Plateforme qui collecte les journaux de tout le parc, les corrèle et déclenche des alertes de sécurité.</span><br><span class="use">Chez moi : Évolution proposée : la centralisation des journaux en est la première marche.</span></div>
+  <div class="def"><b>SNMP</b> <i>Simple Network Management Protocol</i><br><span>Protocole d'interrogation de l'état d'un équipement réseau : charge, interfaces, mémoire.</span><br><span class="use">Chez moi : Utilisé pour superviser le pare-feu, qui ne peut pas porter d'agent.</span></div>
+  <div class="def"><b>SOC</b> <i>Security Operations Center</i><br><span>Équipe qui surveille les alertes de sécurité en continu et déclenche la réponse.</span><br><span class="use">Chez moi : Cité comme horizon d'évolution, hors périmètre du projet.</span></div>
+  <div class="def"><b>SSH</b> <i>Secure Shell</i><br><span>Protocole d'administration à distance chiffré, port 22 par défaut. Il porte aussi le transfert de fichiers SFTP.</span><br><span class="use">Chez moi : Base du service de transfert publié, restreint par chroot.</span></div>
+  <div class="def"><b>SSL</b> <i>Secure Sockets Layer</i><br><span>Ancêtre de TLS. Le nom reste employé par habitude, y compris dans les interfaces, mais le protocole utilisé est TLS.</span><br><span class="use">Chez moi : Le mode du VPN s'appelle encore SSL/TLS dans pfSense.</span></div>
+  <div class="def"><b>TAC</b> <i>Technical Assistance Center</i><br><span>Le support technique de l'éditeur. L'offre Pro garantit une première réponse sous 24 h.</span><br><span class="use">Chez moi : 370 € HT par an et par pare-feu au devis.</span></div>
+  <div class="def"><b>TCP / UDP</b> <i>Transmission Control Protocol / User Datagram Protocol</i><br><span>TCP garantit l'ordre et la livraison, au prix d'accusés de réception. UDP envoie sans garantie, donc sans surcoût.</span><br><span class="use">Chez moi : Le VPN est en UDP ; les services web publiés sont en TCP.</span></div>
+  <div class="def"><b>TLS</b> <i>Transport Layer Security</i><br><span>Protocole qui chiffre une connexion et authentifie le serveur par certificat. Successeur de SSL.</span><br><span class="use">Chez moi : Sous-jacent au HTTPS de l'Extranet et au tunnel OpenVPN.</span></div>
+  <div class="def"><b>TP-01352</b> <i>(code de titre professionnel)</i><br><span>Identifiant du titre au répertoire du ministère chargé de l'emploi.</span><br><span class="use">Chez moi : Page de garde du dossier professionnel.</span></div>
+  <div class="def"><b>UTM</b> <i>Unified Threat Management</i><br><span>Équipement qui réunit plusieurs fonctions de sécurité au lieu d'empiler des boîtiers spécialisés.</span><br><span class="use">Chez moi : Les deux pare-feu pfSense : filtrage, NAT, VPN, IPS et filtrage géographique dans une seule machine.</span></div>
+  <div class="def"><b>VE</b> <i>Proxmox Virtual Environment</i><br><span>La plateforme de virtualisation libre utilisée comme socle, qui gère à la fois machines virtuelles et conteneurs.</span><br><span class="use">Chez moi : Socle de tout le projet, mutualisé entre plusieurs équipes.</span></div>
+  <div class="def"><b>VM</b> <i>Virtual Machine / machine virtuelle</i><br><span>Machine complète émulée, avec son propre noyau. Isolation forte, consommation élevée.</span><br><span class="use">Chez moi : Choisie pour les pare-feu et les serveurs ; écartée pour la zone exposée au profit d'un conteneur.</span></div>
+  <div class="def"><b>VPN</b> <i>Virtual Private Network</i><br><span>Tunnel chiffré qui fait circuler du trafic privé à travers un réseau public, comme s'il s'agissait d'un câble direct.</span><br><span class="use">Chez moi : Deux usages : site à site et accès nomade.</span></div>
+  <div class="def"><b>VSS</b> <i>Volume Shadow Copy Service</i><br><span>Mécanisme Windows qui fige une image cohérente des fichiers, même ouverts, le temps de les sauvegarder.</span><br><span class="use">Chez moi : C'est ce qui permet de sauvegarder le contrôleur de domaine sans l'arrêter.</span></div>
+  <div class="def"><b>WAN</b> <i>Wide Area Network</i><br><span>Dans un pare-feu, l'interface tournée vers l'extérieur.</span><br><span class="use">Chez moi : Réseau de transit mutualisé 192.168.254.0/24 : .88 pour Paris, .89 pour Lyon.</span></div>
+  <div class="def"><b>WSUS</b> <i>Windows Server Update Services</i><br><span>Service Microsoft qui centralise la distribution des correctifs Windows dans un parc.</span><br><span class="use">Chez moi : Hors de mon périmètre ; apparaît dans un constat d'audit, son interface étant en clair.</span></div>
+  <h3>Les produits et outils cités</h3>
+  <div class="def"><b>pfSense CE</b> - <span>Distribution libre de pare-feu, basée sur FreeBSD. CE signifie Community Edition, la version gratuite. Version 2.7.2 ici.</span></div>
+  <div class="def"><b>Netgate</b> - <span>Le constructeur qui édite pfSense et vend les boîtiers associés. Le modèle 4200 est retenu au devis.</span></div>
+  <div class="def"><b>OPNsense</b> - <span>Concurrent direct de pfSense, issu du même code à l'origine. Comparé puis écarté : documentation moins abondante.</span></div>
+  <div class="def"><b>pfBlockerNG</b> - <span>Module de pfSense qui bloque par pays et par réputation d'adresse, à partir de bases mises à jour automatiquement.</span></div>
+  <div class="def"><b>Snort</b> - <span>Moteur de détection et de prévention d'intrusion, à base de signatures. Fonctionne en mode détection ou en mode blocage.</span></div>
+  <div class="def"><b>Suricata</b> - <span>Moteur équivalent à Snort, multi-thread. Même rôle, même format de règles ; le choix s'est fait sur l'intégration disponible.</span></div>
+  <div class="def"><b>Nginx</b> - <span>Serveur web léger, utilisé ici pour publier l'Extranet en HTTPS avec redirection du trafic en clair.</span></div>
+  <div class="def"><b>fail2ban</b> - <span>Service qui surveille les journaux d'authentification et bannit l'adresse source après un nombre d'échecs.</span></div>
+  <div class="def"><b>rsyslog</b> - <span>Service de journalisation Linux, capable d'envoyer les journaux vers un collecteur distant en UDP 514.</span></div>
+  <div class="def"><b>Zabbix</b> - <span>Plateforme de supervision : agents sur les serveurs, déclencheurs, actions, tableaux de bord.</span></div>
+  <div class="def"><b>Veeam Backup &amp; Replication</b> - <span>Solution de sauvegarde ; l'agent Windows protège les serveurs, le serveur central planifie et stocke.</span></div>
+  <div class="def"><b>Proxmox VE</b> - <span>Hyperviseur libre qui gère machines virtuelles (KVM) et conteneurs (LXC) depuis une interface web.</span></div>
+  <div class="def"><b>Debian 12</b> - <span>Distribution Linux stable, utilisée pour le conteneur de la zone exposée.</span></div>
+  <div class="def"><b>Nmap</b> - <span>Scanner réseau : il découvre les machines, les ports ouverts et les versions des services.</span></div>
+  <div class="def"><b>PingCastle</b> - <span>Outil d'audit d'Active Directory en lecture seule, qui produit un score reproductible et comparable.</span></div>
+  <div class="def"><b>MaxMind</b> - <span>Fournisseur des bases de géolocalisation d'adresses IP utilisées par le filtrage géographique.</span></div>
+  <div class="def"><b>WireGuard</b> - <span>VPN moderne, très rapide et simple, mais qui authentifie des machines par clé publique et non des utilisateurs.</span></div>
+  <h3>Termes et notions</h3>
+  <div class="def"><b>Kerberos</b> - <span>Le protocole d'authentification du domaine Windows. Il délivre des tickets à durée limitée au lieu de faire circuler les mots de passe. Il dépend étroitement du DNS et de l'horloge : un décalage de quelques minutes entre machines suffit à le faire échouer.</span></div>
+  <div class="def"><b>Refus par défaut</b> - <span>Principe selon lequel tout flux non explicitement autorisé est bloqué. C'est la base de la politique de filtrage des deux pare-feu.</span></div>
+  <div class="def"><b>Matrice de flux</b> - <span>Le tableau qui liste chaque flux autorisé : source, destination, ports, décision, justification. C'est le document de référence de l'audit : tout service détecté qui n'y figure pas devient un constat.</span></div>
+  <div class="def"><b>Moindre privilège</b> - <span>Chaque compte ne dispose que des droits strictement nécessaires. Appliqué ici à l'accès distant : on vérifie une appartenance à un groupe, pas une adresse.</span></div>
+  <div class="def"><b>Cloisonnement</b> - <span>Découpage du réseau en zones de confiance distinctes, pour qu'une compromission reste locale. Quatre zones ici : transit, interne Paris, zone exposée, interne Lyon.</span></div>
+  <div class="def"><b>Défense en profondeur</b> - <span>Empiler des mesures indépendantes pour qu'aucune ne soit un point unique de défaillance : filtrage, puis détection, puis bannissement, puis journalisation.</span></div>
+  <div class="def"><b>Instantané (snapshot)</b> - <span>Photo de l'état d'une machine avant un changement risqué, pour revenir en arrière en quelques secondes. Pris avant chaque mise en service.</span></div>
+  <div class="def"><b>chroot</b> - <span>Mécanisme qui change la racine apparente du système de fichiers pour une session : le compte ne voit plus rien au-dessus de son dossier.</span></div>
+  <div class="def"><b>Codes 6272 et 6273</b> - <span>Les deux identifiants d'événement du serveur d'authentification : 6272 accès accordé, 6273 accès refusé. Ce sont eux qui prouvent que la chaîne RADIUS fonctionne.</span></div>
+  <div class="def"><b>Audit en boîte blanche</b> - <span>Audit mené avec la connaissance complète de l'infrastructure et un périmètre écrit à l'avance, pour viser l'exhaustivité plutôt que l'effet de surprise.</span></div>
+  <div class="def"><b>Sauvegarde incrémentale</b> - <span>Seules les données modifiées depuis la sauvegarde précédente sont transférées, d'où 18,1 Go traités pour 578,6 Mo transmis.</span></div>
+  <div class="def"><b>Point unique de défaillance</b> - <span>Composant dont la panne arrête le service à lui seul. Ici, un seul pare-feu par site : c'est le risque que le second équipement en CARP aurait supprimé.</span></div>
+  <h3>Les concepts à comprendre</h3>
+  <p class="lead">Si on te demande pourquoi, comment, ou à quoi ça sert, la réponse est ici.</p>
+  <div class="concept"><span class="chip">à comprendre</span><b>Pourquoi un refus par défaut plutôt qu'une liste de blocage</b><p>Une liste de blocage n'arrête que ce qu'on a pensé à y mettre : tout ce qu'on n'a pas prévu passe. Le refus par défaut inverse la charge de la preuve. Chaque flux autorisé doit être justifié, donc écrit dans la matrice de flux, donc connu. Conséquence pratique : quand l'audit détecte un service qui n'est pas dans la matrice, c'est un constat, pas une découverte.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Comment un pare-feu évalue une règle</b><p>Les règles sont lues de haut en bas, et c'est la première qui correspond qui l'emporte : les suivantes ne sont pas évaluées. L'ordre n'est donc pas cosmétique. Le pare-feu est aussi à états : une fois une connexion autorisée dans un sens, les réponses reviennent sans règle supplémentaire. C'est pour cela qu'on n'écrit presque jamais de règle de retour.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Pourquoi une zone démilitarisée change tout</b><p>Beaucoup d'architectures publient un service sur Internet tout en le laissant dialoguer librement avec le réseau interne. Dans ce cas, la compromission du service devient la compromission de l'entreprise. Une vraie DMZ est un réseau que l'on peut perdre : le serveur exposé n'a aucun chemin vers l'interne, c'est bloqué et journalisé. On accepte de sacrifier la zone pour protéger le reste.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>NAT sortant et redirection de port, deux choses différentes</b><p>Le NAT sortant masque tout un réseau derrière une seule adresse publique : il protège par effet de bord, puisque personne ne peut joindre une machine interne spontanément. La redirection de port fait l'inverse : elle ouvre volontairement un chemin de l'extérieur vers une machine précise. C'est la seule façon de publier un service, et c'est aussi le premier endroit où l'on se trompe : j'ai dupliqué une règle sans changer le port de destination, et l'Extranet renvoyait une erreur de chiffrement.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Pourquoi un /30 pour un tunnel</b><p>Un /30 ne contient que quatre adresses : une de réseau, une de diffusion, et deux utilisables. C'est exactement ce dont un tunnel point à point a besoin, une adresse à chaque bout. Prendre plus large gaspillerait de l'espace d'adressage et brouillerait la lecture du plan.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>La chaîne de confiance d'une autorité de certification interne</b><p>Le serveur VPN présente un certificat. Le client ne lui fait pas confiance parce qu'il est joli, mais parce qu'il est signé par une autorité que le client connaît déjà. Créer l'autorité sur le pare-feu permet de signer soi-même les certificats du serveur et des clients, sans acheter quoi que ce soit, parce que les deux extrémités sont maîtrisées. La limite : un navigateur extérieur, lui, ne connaît pas cette autorité et affichera une alerte.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Pourquoi un VPN en UDP et pas en TCP</b><p>Encapsuler du TCP dans du TCP fait se superposer deux mécanismes de retransmission : quand le réseau perd un paquet, les deux couches le renvoient en même temps et le débit s'effondre. C'est le phénomène dit de fonte TCP. UDP n'offre aucune garantie, et c'est précisément ce qu'on veut : la garantie est assurée par le protocole transporté à l'intérieur du tunnel. On ne bascule en TCP que lorsqu'un réseau visité bloque l'UDP.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>La chaîne d'authentification d'un accès nomade, de bout en bout</b><p>Le poste ouvre le tunnel vers l'adresse publique du siège. Le pare-feu présente son certificat, puis transmet les identifiants au serveur RADIUS. Celui-ci interroge l'annuaire, vérifie l'appartenance au groupe d'accès distant, et renvoie une décision. Le pare-feu applique la décision et attribue une adresse du réseau VPN, avec la route et le serveur de noms internes. Point important à dire au jury : à aucun moment le pare-feu ne détient le mot de passe.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Pourquoi Kerberos impose de garder le DNS sur le contrôleur de domaine</b><p>Kerberos n'authentifie pas une adresse IP, il authentifie un service identifié par son nom. Le client doit donc résoudre ce nom exactement comme l'annuaire l'a enregistré, y compris les enregistrements de service. Si l'on bascule la résolution des postes vers le pare-feu pour filtrer le web, ces enregistrements disparaissent du chemin et l'authentification du domaine se dégrade. C'est la raison technique pour laquelle j'ai écarté le filtrage par catégories, et elle est bien plus solide qu'un simple manque de temps.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Conteneur ou machine virtuelle : ce qui est réellement partagé</b><p>Une machine virtuelle embarque son propre noyau : l'hyperviseur lui présente du matériel simulé. L'isolation est forte, le coût en mémoire aussi. Un conteneur partage le noyau de l'hôte et n'isole que l'espace de nommage : processus, réseau, système de fichiers. D'où 512 Mo au lieu de 2 Go, mais aussi une surface d'attaque commune. En zone exposée, ce compromis doit être compensé et dit.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Ce que veut dire « conteneur non privilégié »</b><p>Dans un conteneur privilégié, l'utilisateur root du conteneur est le root de l'hôte : une évasion donne tout. Dans un conteneur non privilégié, les identifiants sont décalés — le root interne correspond à un utilisateur sans droits sur l'hôte. C'est ce décalage qui rend un conteneur acceptable pour héberger un service exposé à Internet.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Comment un chroot enferme un compte</b><p>Le service de transfert change la racine apparente du système de fichiers pour la session : le compte ne voit plus que son propre dossier, et les chemins au-dessus n'existent littéralement pas pour lui. On y ajoute l'absence de shell et l'interdiction de rediriger des ports : même avec le mot de passe, le compte ne sert qu'à déposer et récupérer des fichiers.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Comment fail2ban décide de bannir</b><p>Il lit en continu les journaux du service, cherche un motif d'échec d'authentification, compte les occurrences par adresse source sur une fenêtre de temps, et au-delà du seuil ajoute une règle de blocage temporaire. Le réglage est un arbitrage : trop bas on bannit un client maladroit, trop haut on laisse le temps à une attaque. Cinq échecs est le compromis retenu.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Pourquoi les journaux doivent quitter la machine qui les produit</b><p>Sur l'équipement, ils sont volatils — rotation, espace limité — et surtout ils sont à la portée de celui qui prend la main dessus : effacer ses traces est la première chose que fait un attaquant. Centraliser les journaux en fait une preuve. Chez moi, la centralisation a payé dès la première heure : elle a révélé que la surveillance de la liaison Internet interrogeait l'adresse du réseau au lieu de celle de la passerelle.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Comment fonctionne un déclencheur de supervision, et pourquoi la résolution automatique compte</b><p>L'agent remonte des valeurs en continu. Le déclencheur est une condition évaluée sur ces valeurs ; quand elle devient vraie, un problème s'ouvre et une action part. Quand elle redevient fausse, le problème se referme tout seul. Une supervision qui alerte mais ne sait pas constater le retour au calme produit du bruit, pas de l'information — et le bruit finit toujours par être ignoré.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Sauvegarde complète, incrémentale, différentielle</b><p>La complète copie tout. L'incrémentale ne copie que ce qui a changé depuis la sauvegarde précédente, quelle qu'elle soit. La différentielle copie tout ce qui a changé depuis la dernière complète. L'incrémentale économise énormément de transfert — 18,1 Go traités pour 578,6 Mo réellement transmis — mais la restauration dépend de toute la chaîne : si un maillon manque, on ne remonte pas. D'où l'intérêt d'une complète périodique, visible dans la liste des points de restauration.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Comment sauvegarder un serveur qui tourne</b><p>On ne peut pas copier un fichier en cours d'écriture sans risquer une image incohérente. Windows fournit un mécanisme qui fige un instantané cohérent du volume le temps de la copie, pendant que le service continue de travailler. C'est ce qui permet de sauvegarder un contrôleur de domaine sans fenêtre d'arrêt, et c'est ce que montre la capture de la session de sauvegarde.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>RPO et RTO : comment on les mesure vraiment</b><p>Le RPO ne se décide pas, il se déduit de la fréquence des sauvegardes : un job par nuit, c'est un RPO de 24 heures, quoi qu'on écrive dans un contrat. Le RTO, lui, se mesure chronomètre en main sur une restauration réelle : début de l'opération, fin de la vérification. Un RTO annoncé sans test n'est pas un RTO, c'est un espoir.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Comment un moteur de prévention décide, et le coût des faux positifs</b><p>Il compare le trafic à des signatures publiques. Quand une correspond, il bloque la source selon la politique définie. L'intérêt est la réaction immédiate, sans humain. Le revers, c'est le faux positif : un trafic légitime reconnu à tort. Chez moi le faux positif, c'était moi — mes scans d'audit ont été bloqués. La parade est une liste d'exclusion pour les postes d'administration et une fenêtre d'audit déclarée.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Pourquoi le blocage géographique sert surtout en sortie</b><p>En entrée, il réduit le bruit : moins de tentatives automatisées, donc des journaux lisibles. Mais il n'arrête pas un attaquant déterminé, qui passera par un relais situé dans un pays autorisé. En sortie, il a une vraie valeur : il empêche une machine déjà compromise de joindre son serveur de commande. C'est une mesure contre l'exfiltration plus que contre l'intrusion, et c'est l'argument à donner si on te dit que le géo-blocage ne sert à rien.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Pourquoi le score d'audit d'annuaire est un maximum et non une somme</b><p>Le score se calcule sur quatre familles : objets obsolètes, comptes privilégiés, relations d'approbation, anomalies. Le score global retenu est le plus élevé des quatre. La logique est celle du maillon faible : un domaine n'est pas à moitié sûr parce qu'on a corrigé trois familles sur quatre. Conséquence pratique : corriger la famille la plus mauvaise est ce qui fait réellement baisser le score.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Boîte blanche, boîte noire, boîte grise</b><p>En boîte noire, l'auditeur ne sait rien : il simule un attaquant extérieur. En boîte blanche, il a les plans, les accès et la configuration : il cherche l'exhaustivité plutôt que l'effet de surprise. La boîte grise est entre les deux. J'ai travaillé en boîte blanche parce que l'objectif était de vérifier que la réalité correspondait à la matrice de flux, pas de jouer une intrusion.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Les six étapes du traitement d'un incident</b><p>Détection, qualification, confinement, éradication, retour à la normale, retour d'expérience. La qualification est l'étape qu'on saute le plus souvent : c'est elle qui dit si l'on a affaire à un balayage automatique ou à une attaque ciblée, et donc le niveau de réponse. Le retour d'expérience est ce qui distingue un incident traité d'un incident subi : il produit une modification durable, pas un simple soulagement.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Pourquoi une garantie de rétablissement coûte si cher</b><p>L'opérateur ne vend pas un délai d'intervention, il vend un délai de remise en service, avec pénalités. Pour le tenir, il doit immobiliser des pièces de rechange, du personnel d'astreinte et parfois un lien de secours. C'est pour cela qu'une fibre dédiée avec GTR 4 h se négocie entre 200 et 400 € par mois et par site, quand un accès grand public coûte dix fois moins. Le client paie la garantie, pas le débit.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Pourquoi un devis s'exprime hors taxes</b><p>L'entreprise récupère la TVA : elle ne représente pas un coût pour elle, seulement une avance de trésorerie. Le montant qui compte dans une décision d'investissement est donc le HT. On fait figurer le TTC parce que c'est la somme réellement décaissée, et parce que c'est une obligation de forme.</p></div>
+  <div class="concept"><span class="chip">à comprendre</span><b>Pourquoi avoir chiffré ce que je n'ai pas déployé</b><p>Parce qu'une brique non livrée n'est un échec que si personne ne peut la reprendre. En la chiffrant — second pare-feu en CARP à 3 jours plus matériel, filtrage par catégories à 1 jour — elle devient une décision éclairée du client plutôt qu'un oubli du prestataire. C'est exactement ce qu'on attend d'une compétence de conception : savoir arbitrer, et rendre l'arbitrage visible.</p></div>
+</section>
+
+<!-- ====================================================== QUESTIONS JURY -->
+<section id="jury">
+  <h2><span class="n">04</span>Questions du jury</h2>
+  <p class="lead">Clique pour révéler la réponse. Les questions marquées <span class="tag t-piege">PIÈGE</span> sont celles où on cherche à voir si tu comprends ou si tu récites.</p>
+  <div class="tools">
+    <button class="btn" onclick="toggleAll(true)">Tout déplier</button>
+    <button class="btn" onclick="toggleAll(false)">Tout replier</button>
+    <button class="btn" data-flash-trap>Mode flash · pièges</button>
+  </div>
+
+  <h3>Contexte et gestion de projet</h3>
+
+  <details class="qa"><summary>Pourquoi une refonte et pas une mise à niveau ?<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>Parce que le système repose sur des technologies qui ne seront plus maintenues. Mettre à niveau, c'est prolonger une dette : on paye deux fois, une fois la rustine, une fois la refonte. Le client a demandé une architecture neuve, pas un sursis.</p>
+  </div></details>
+
+  <details class="qa"><summary>Comment avez-vous fixé les priorités ?<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>Trois règles. D'abord, ce qui débloque le reste passe en premier : le tunnel avant le site distant, l'annuaire avant l'authentification des nomades. Ensuite, mieux vaut une brique finie et testée que trois à moitié installées. Enfin, une brique non déployée devient un livrable de conception, chiffré.</p>
+  </div></details>
+
+  <details class="qa"><summary>Votre chiffrage, il vient d'où ?<span class="tag t-chiffre">CHIFFRES</span></summary><div class="a">
+    <p>Des tarifs publics constructeurs et revendeurs. Le matériel : 3 pare-feu Netgate 4200 à 550 €, un commutateur 48 ports PoE+ à 1 900 €, deux de 24 ports à 1 450 € - soit 6 450 € HT. La main d'œuvre : 30 jours à 550 ou 600 € selon la nature, soit 16 950 € HT. Total 23 400 € HT, 28 080 € TTC.</p>
+    <p>Les abonnements sont sortis du total parce qu'ils se souscrivent directement : fibre dédiée avec GTR 4 h entre 200 et 400 € par mois et par site, support éditeur 370 € par an et par pare-feu, nom de domaine 15 € par an.</p>
+  </div></details>
+
+  <details class="qa"><summary>Pourquoi 30 jours ? Ça paraît beaucoup.<span class="tag t-piege">PIÈGE</span></summary><div class="a">
+    <p>Parce que ce n'est pas une installation ponctuelle mais une prestation étalée sur neuf mois, avec du cadrage, des points d'étape, une recette, un audit et de la documentation. Le déploiement pur représente une douzaine de jours ; le reste, c'est ce qui fait qu'un client peut reprendre l'infrastructure sans moi.</p>
+  </div></details>
+
+  <details class="qa"><summary>À quoi sert votre RACI, concrètement ?<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>À repérer les activités où deux personnes doivent intervenir. Il y en a deux : l'authentification RADIUS, à cheval entre le pare-feu et l'annuaire, et la centralisation des journaux. Ce sont les deux seules briques recettées à deux, et c'est là que les erreurs d'interface se produisent.</p>
+  </div></details>
+
+  <h3>Conception</h3>
+
+  <details class="qa"><summary>Pourquoi pfSense plutôt qu'une solution éditeur ?<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>Trois raisons. Il réunit pare-feu, VPN, filtrage géographique et détection d'intrusion dans une seule machine, ce qui compte quand la mémoire est comptée. Sa documentation est abondante, ce qui réduit le risque de mauvaise configuration. Et le coût se déplace de la licence vers la compétence interne, ce que le client peut absorber puisqu'il a un service informatique.</p>
+    <p>Une solution éditeur apporterait un support contractuel - c'est pour ça que j'ai chiffré l'abonnement TAC Pro dans le devis : on peut acheter ce support sans changer de produit.</p>
+  </div></details>
+
+  <details class="qa"><summary>Pourquoi OpenVPN et pas IPsec ou WireGuard ?<span class="tag t-piege">PIÈGE</span></summary><div class="a">
+    <p>IPsec est souvent plus rapide, mais plus rigide à traverser et plus pénible à dépanner quand les deux extrémités ne sont pas maîtrisées. WireGuard est le plus rapide et le plus simple, mais il identifie des <b>machines</b> par clé publique, pas des <b>utilisateurs</b> : il ne répond pas à l'exigence « validation par la base de comptes de l'annuaire ».</p>
+    <p>OpenVPN coche les deux usages avec un seul outil : le tunnel permanent entre sites, et l'accès nomade adossé à l'annuaire.</p>
+  </div></details>
+
+  <details class="qa"><summary>Qu'est-ce que vous avez décidé de ne pas faire, et pourquoi ?<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>Deux choses. Le second pare-feu par site en actif-passif (CARP) : il supprime le point unique de défaillance, mais le matériel et la mémoire n'étaient pas disponibles. Chiffré à 3 jours plus le matériel.</p>
+    <p>Et le filtrage web par catégories : il suppose de faire du pare-feu le résolveur DNS des postes, rôle que doit garder le contrôleur de domaine pour que Kerberos authentifie le parc. Le gain ne valait pas le risque. Chiffré à 1 jour.</p>
+  </div></details>
+
+  <details class="qa"><summary>Votre plan d'adressage en /24 pour 50 personnes, ce n'est pas surdimensionné ?<span class="tag t-piege">PIÈGE</span></summary><div class="a">
+    <p>Volontairement. Un /24 laisse la place à une segmentation future - postes, serveurs, téléphonie, impression - sans réadresser. Le coût d'un /24 est nul ; le coût d'un réadressage en production ne l'est pas.</p>
+  </div></details>
+
+  <h3>Pare-feu, VPN, authentification</h3>
+
+  <details class="qa"><summary>Expliquez le chemin d'une connexion nomade, de bout en bout.<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>Le poste ouvre le client OpenVPN et contacte l'adresse publique du siège sur UDP 1195. Le pare-feu présente son certificat, signé par l'autorité interne. Les identifiants saisis sont transmis au serveur RADIUS, qui tourne sur DC1. Celui-ci vérifie le compte dans l'annuaire, contrôle l'appartenance au groupe d'accès distant, et répond accepté ou refusé - l'événement est tracé en 6272 ou 6273.</p>
+    <p>Si c'est accepté, le pare-feu attribue une adresse en 10.8.0.0/24 et pousse la route vers le réseau du siège ainsi que le serveur de noms interne. Le pare-feu n'a jamais détenu le mot de passe.</p>
+  </div></details>
+
+  <details class="qa"><summary>Pourquoi passer par RADIUS plutôt que des comptes locaux sur le pare-feu ?<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>Parce que le départ d'un salarié doit se traiter à un seul endroit. Avec des comptes locaux, il faut penser à intervenir sur l'équipement, et personne ne le fait. Avec l'annuaire, retirer l'utilisateur du groupe suffit - et c'est fait de toute façon lors d'un départ.</p>
+  </div></details>
+
+  <details class="qa"><summary>Qu'est-ce qui se passe si le lien entre Paris et Lyon tombe ?<span class="tag t-piege">PIÈGE</span></summary><div class="a">
+    <p>Le site de Lyon garde sa sortie Internet et son adressage local, les postes continuent de travailler. Ce qui s'arrête, c'est la réplication avec le siège et l'accès aux ressources centrales. C'est précisément la raison d'être d'un contrôleur de domaine sur place dans la cible, et la raison pour laquelle le tunnel est surveillé.</p>
+  </div></details>
+
+  <details class="qa"><summary>Votre tunnel est en UDP. Pourquoi pas TCP ?<span class="tag t-piege">PIÈGE</span></summary><div class="a">
+    <p>Parce qu'encapsuler du TCP dans du TCP dégrade fortement les performances : les deux couches retransmettent en même temps. UDP laisse la gestion des pertes au protocole transporté. On ne bascule en TCP que lorsqu'un réseau visité bloque l'UDP.</p>
+  </div></details>
+
+  <details class="qa"><summary>Comment avez-vous sécurisé l'accès à l'administration du pare-feu ?<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>L'interface n'est jamais exposée côté public. Elle n'est joignable que depuis le réseau interne, en HTTPS. Toute ouverture temporaire est créée restreinte à une adresse source unique - et doit naître avec sa date de péremption, parce qu'on les oublie. L'audit en a d'ailleurs retrouvé une.</p>
+  </div></details>
+
+  <h3>Zone exposée et Linux</h3>
+
+  <details class="qa"><summary>Un conteneur en DMZ, c'est acceptable ? Son isolation est plus faible.<span class="tag t-piege">PIÈGE</span></summary><div class="a">
+    <p>C'est le bon reproche, et je l'assume. Un conteneur partage le noyau de l'hôte : une faille d'évasion a un impact plus large qu'avec une machine virtuelle. J'ai compensé par trois mesures : le conteneur est non privilégié, il n'a aucun chemin vers les réseaux internes - c'est vérifié et journalisé - et l'accès distant est protégé par bannissement automatique.</p>
+    <p>Le choix vient d'une contrainte réelle de mémoire : 512 Mo contre 2 Go. En production, avec la mémoire disponible, je recommanderais une machine virtuelle, voire un service par machine.</p>
+  </div></details>
+
+  <details class="qa"><summary>Qu'est-ce qui empêche un attaquant qui prend l'Extranet d'atteindre le réseau interne ?<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>Une règle explicite de blocage de la DMZ vers les réseaux internes, journalisée, et aucune route utile dans l'autre sens. La sortie de la DMZ est limitée aux ports nécessaires aux mises à jour. J'ai testé la tentative depuis le conteneur : elle est bloquée et elle apparaît dans les journaux.</p>
+  </div></details>
+
+  <details class="qa"><summary>Pourquoi SFTP et pas FTPS ?<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>SFTP passe sur une seule connexion, donc un seul port à publier et des règles simples. FTPS ouvre une plage de ports pour les données, ce qui multiplie les ouvertures sur le pare-feu. À sécurité équivalente, je choisis ce qui réduit la surface.</p>
+  </div></details>
+
+  <details class="qa"><summary>Votre certificat est auto-signé. Un navigateur va alerter.<span class="tag t-piege">PIÈGE</span></summary><div class="a">
+    <p>Oui, et c'est une limite assumée de la maquette : il n'y a ni nom de domaine public ni adresse publique pour faire valider un certificat par une autorité reconnue. En production, le devis prévoit le nom de domaine et la zone DNS, et le certificat serait délivré par une autorité publique. La mécanique TLS, elle, est identique.</p>
+  </div></details>
+
+  <h3>Détection, filtrage, supervision</h3>
+
+  <details class="qa"><summary>Quelle différence entre un IDS et un IPS, et où êtes-vous ?<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>Un IDS détecte et signale. Un IPS décide et bloque. Je suis en mode blocage sur l'interface interne : une source qui déclenche une signature est écartée sans intervention humaine. C'est ce qui a bloqué mon propre scan d'audit.</p>
+  </div></details>
+
+  <details class="qa"><summary>Bloquer des pays entiers, ça sert vraiment à quelque chose ?<span class="tag t-piege">PIÈGE</span></summary><div class="a">
+    <p>Ça réduit le bruit, ça ne remplace pas une protection. Un attaquant déterminé passe par un relais situé ailleurs. L'intérêt est double : moins de tentatives automatisées dans les journaux, donc des alertes plus lisibles ; et surtout le blocage <b>en sortie</b>, qui empêche une machine déjà compromise de joindre son serveur de commande.</p>
+  </div></details>
+
+  <details class="qa"><summary>Pourquoi centraliser les journaux ? Ils sont déjà sur le pare-feu.<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>Parce qu'ils y sont volatils, et qu'un attaquant qui prend la main sur l'équipement les efface. Les journaux doivent quitter la machine qui les produit. La centralisation a d'ailleurs payé immédiatement : elle a révélé que la surveillance de la liaison Internet interrogeait l'adresse du réseau au lieu de celle de la passerelle.</p>
+  </div></details>
+
+  <details class="qa"><summary>Comment savez-vous que votre supervision fonctionne ?<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>Parce que je l'ai provoquée. J'ai arrêté volontairement un service sur un serveur surveillé : l'hôte est passé au rouge, l'alerte s'est déclenchée, le courriel est parti, et l'alerte s'est refermée seule au redémarrage du service. Une supervision qui n'a jamais détecté de panne n'a rien prouvé.</p>
+  </div></details>
+
+  <details class="qa"><summary>Un détail technique sur Zabbix qui vous a coûté du temps ?<span class="tag t-chiffre">CHIFFRES</span></summary><div class="a">
+    <p>Le filtrage par identifiant d'événement. Il se règle dans la clé technique de l'élément, pas dans l'expression du déclencheur, parce que la valeur remontée est le texte du message et pas son numéro. Tant qu'on cherche au mauvais endroit, le déclencheur ne part jamais.</p>
+  </div></details>
+
+  <h3>Sauvegarde et reprise</h3>
+
+  <details class="qa"><summary>Expliquez RPO et RTO avec vos chiffres.<span class="tag t-chiffre">CHIFFRES</span></summary><div class="a">
+    <p>Le RPO, c'est ce que je perds, exprimé en temps. Le RTO, c'est le temps que je mets à revenir.</p>
+    <p>Pour la configuration du pare-feu : RPO zéro, parce que j'exporte juste avant chaque intervention, et RTO cinq minutes, redémarrage compris. Pour les données du serveur : le job tourne une fois par nuit, donc RPO jusqu'à 24 heures, et RTO six minutes mesurées sur une restauration de fichiers.</p>
+  </div></details>
+
+  <details class="qa"><summary>24 heures de RPO, c'est beaucoup. Qu'est-ce que vous proposez ?<span class="tag t-piege">PIÈGE</span></summary><div class="a">
+    <p>C'est le vrai enseignement du test, et je le présente comme tel. Une panne en fin de journée coûte une journée de travail à cinquante personnes. La correction n'est pas technique, elle est budgétaire : multiplier les points de restauration consomme du stockage. Mon rôle est de chiffrer les deux et de laisser le client arbitrer entre le coût du stockage et le coût d'une journée de ressaisie.</p>
+  </div></details>
+
+  <details class="qa"><summary>Comment avez-vous testé la restauration ?<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>J'ai déposé un fichier témoin sur le contrôleur de domaine, lancé le job manuellement, puis supprimé le fichier pour simuler la perte - corbeille vidée, sinon ce n'est pas une restauration. Ensuite restauration de fichiers vers <b>un autre emplacement</b>, jamais par-dessus la source tant qu'on n'a pas vérifié ce qu'on récupère. Le motif de l'intervention est renseigné dans l'assistant, ce qui laisse une trace dans l'historique.</p>
+  </div></details>
+
+  <h3>Audit et incidents</h3>
+
+  <details class="qa"><summary>Pourquoi écrire un périmètre avant un audit ?<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>Parce que la même commande, sans accord écrit, est une intrusion. Le périmètre dit ce qui est autorisé, sur quelles adresses, et pendant quelle fenêtre. Ici il excluait explicitement l'infrastructure d'accueil et les machines des autres équipes, sur un réseau partagé.</p>
+  </div></details>
+
+  <details class="qa"><summary>Un constat que vous n'avez pas corrigé. Pourquoi ?<span class="tag t-piege">PIÈGE</span></summary><div class="a">
+    <p>La base de données de supervision en écoute sur tout le réseau interne. Le réglage de mise en écoute locale n'était pas pris en compte par le service, et insister risquait d'interrompre la supervision en production, en pleine fin de projet.</p>
+    <p>J'ai reporté le constat avec sa recommandation et laissé la décision à l'exploitant. Un auditeur documente et alerte ; il ne casse pas un service dont il n'a pas la charge.</p>
+  </div></details>
+
+  <details class="qa"><summary>Racontez un incident que vous avez traité.<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>Des tentatives répétées d'authentification sur le service de transfert de fichiers, quelques heures après sa publication. Détection par fail2ban après cinq échecs, confinement automatique de la source sans intervention, vérification qu'aucune connexion n'avait abouti, contrôle du contenu du dépôt, puis levée du bannissement une fois l'origine identifiée.</p>
+    <p>Ce que j'en retiens : entre la mise en ligne d'un service et la première tentative automatisée, il s'écoule souvent moins d'une heure. La protection doit être active <b>avant</b> la publication, pas ajoutée ensuite.</p>
+  </div></details>
+
+  <details class="qa"><summary>Le second incident, c'est vous qui l'avez provoqué ?<span class="tag t-piege">PIÈGE</span></summary><div class="a">
+    <p>Oui, sans le vouloir, et c'est ce qui le rend intéressant. La moitié de mes scans d'audit revenait vide : j'ai d'abord cru à une panne de l'outil. En fait le moteur de prévention avait reconnu une signature de scan et banni mon adresse. Le dispositif a fonctionné exactement comme prévu, contre son administrateur.</p>
+    <p>La correction : une liste d'exclusion pour les postes d'administration, et une fenêtre d'audit déclarée à l'avance.</p>
+  </div></details>
+
+  <details class="qa"><summary>PingCastle : votre score passe de 60 à 20. Ça veut dire quoi ?<span class="tag t-chiffre">CHIFFRES</span></summary><div class="a">
+    <p>Plus le score est bas, mieux c'est. Il se calcule sur quatre indicateurs - objets obsolètes, comptes privilégiés, relations d'approbation, anomalies - et le score global est le <b>maximum</b> des quatre, jamais leur somme. Corriger une catégorie ne fait donc pas baisser le total si une autre reste haute. Les deux relevés ont été faits dans les mêmes conditions, avec les corrections tracées entre les deux.</p>
+  </div></details>
+
+  <h3>Sur la prestation elle-même</h3>
+
+  <details class="qa"><summary>Qu'est-ce que vous feriez différemment ?<span class="tag t-piege">PIÈGE</span></summary><div class="a">
+    <p>Trois choses. Je déclarerais la fenêtre d'audit et la liste d'exclusion <b>avant</b> de scanner, au lieu de découvrir le blocage en route. Je vérifierais systématiquement les deux extrémités d'une règle de publication, parce que c'est l'erreur qui m'a coûté le plus de temps. Et je testerais une règle de détection sur une instance de test avant de la poser en production.</p>
+  </div></details>
+
+  <details class="qa"><summary>Qu'est-ce que ce projet vous a appris, au-delà de la technique ?<span class="tag t-base">BASE</span></summary><div class="a">
+    <p>Qu'un outil qui marche et un outil qui protège, ce n'est pas la même chose. Une règle de publication mal pointée, un moteur de détection qui refuse de démarrer : aucun de ces incidents ne vient du produit choisi, ils viennent tous de la rigueur avec laquelle on vérifie. Et qu'une fonctionnalité non livrée n'est un échec que si personne ne peut la reprendre ensuite - d'où la conception chiffrée de ce que je n'ai pas déployé.</p>
+  </div></details>
+
+  <details class="qa"><summary>Si on vous donnait trois jours de plus, vous feriez quoi ?<span class="tag t-piege">PIÈGE</span></summary><div class="a">
+    <p>Le second facteur d'authentification sur les accès distants. Aujourd'hui l'accès repose sur un seul facteur, le mot de passe du compte. Un second facteur ferait passer le dispositif d'une identité vérifiée à une identité prouvée, et c'est l'évolution qui apporte le plus pour le moins d'effort.</p>
+  </div></details>
+</section>
+
+<!-- ====================================================== GENERAL -->
+<section id="general">
+  <h2><span class="n">05</span>Questions générales, hors projet</h2>
+  <p class="lead">Ce que des camarades se sont vu demander avant toi. Le jury part du projet, puis élargit pour vérifier que tu as un raisonnement d'administrateur réseau et pas seulement une procédure apprise. Chaque réponse se termine par un retour vers ton projet : c'est ce qui fait la différence.</p>
+  <h3>Réseau et architecture</h3>
+  <details class="qa"><summary>Expliquez le modèle OSI et ses sept couches.<span class="tag t-base">BASE</span></summary><div class="a"><p>Sept couches, de bas en haut. La mnémotechnique : <b>Pour Le Réseau Tout Se Passe Automatiquement</b>.</p>
+<ul>
+<li><b>1 Physique</b> - le signal : câble, fibre, connecteur, niveaux électriques.</li>
+<li><b>2 Liaison</b> - l'acheminement sur un même segment, par adresse MAC : Ethernet, Wi-Fi, PPP, et les protocoles qui l'accompagnent (STP, LACP).</li>
+<li><b>3 Réseau</b> - l'acheminement entre réseaux, par adresse IP : IP, ICMP, les protocoles de routage.</li>
+<li><b>4 Transport</b> - la conversation de bout en bout et les ports : TCP et UDP.</li>
+<li><b>5 Session</b> - l'ouverture, le maintien et la fermeture du dialogue.</li>
+<li><b>6 Présentation</b> - la mise en forme : encodage, compression, chiffrement. C'est là qu'on range TLS dans le modèle théorique.</li>
+<li><b>7 Application</b> - ce que voit l'utilisateur : HTTP, DNS, SMTP, SSH.</li>
+</ul>
+<p><b>À rattacher à mon projet :</b> mes règles de pare-feu travaillent en couches 3 et 4 (adresses et ports). Le moteur de détection d'intrusion, lui, inspecte jusqu'à la couche 7, puisqu'il reconnaît des motifs applicatifs. Un commutateur reste en couche 2.</p>
+<p><b>Le piège :</b> en pratique on utilise plutôt le modèle TCP/IP en quatre couches. OSI reste la référence pour situer un protocole.</p></div></details>
+  <details class="qa"><summary>Citez un protocole de couche liaison.<span class="tag t-base">BASE</span></summary><div class="a"><p><b>Ethernet</b> est la réponse la plus sûre. On peut citer aussi <b>PPP</b>, <b>STP</b> (anti-boucle) et <b>LACP</b> (agrégation de liens).</p>
+<p>Attention à <b>ARP</b> : il fait le lien entre l'adresse IP et l'adresse MAC, on le présente souvent à cheval entre les couches 2 et 3. Si tu le cites, dis-le ainsi plutôt que d'affirmer qu'il est purement en couche 2.</p></div></details>
+  <details class="qa"><summary>Qu'est-ce que LACP, et à quoi ça sert ?<span class="tag t-base">BASE</span></summary><div class="a"><p><b>Link Aggregation Control Protocol</b>, normalisé en 802.3ad. Il regroupe plusieurs liens physiques en un seul lien logique entre deux équipements.</p>
+<p>Deux bénéfices : le <b>débit</b> cumulé, et la <b>tolérance de panne</b> - si un câble tombe, le trafic continue sur les autres sans coupure. La répartition se fait par flux, pas paquet par paquet : une seule conversation ne dépasse pas la vitesse d'un lien.</p>
+<p><b>Chez moi :</b> non déployé, il n'y avait qu'un lien par équipement. En production, c'est exactement ce que je mettrais entre le commutateur cœur et le pare-feu, parce que c'est le point de passage unique de tout le trafic.</p></div></details>
+  <details class="qa"><summary>On ajoute trois routeurs et un commutateur à votre schéma. Quels protocoles pour les sécuriser, et que se passe-t-il s'ils tombent ?<span class="tag t-piege">PIÈGE</span></summary><div class="a"><p>Question en deux temps, il faut répondre aux deux.</p>
+<p><b>Sécuriser les équipements et les protocoles :</b></p>
+<ul>
+<li>Administration en <b>SSH</b>, jamais en Telnet, et restreinte par liste d'accès à un réseau d'administration.</li>
+<li><b>SNMPv3</b> au lieu de v1 ou v2c : les versions anciennes transportent la communauté en clair.</li>
+<li>Si routage dynamique, <b>authentification des annonces</b> (OSPF ou BGP avec clé) : sinon n'importe qui injecte une route.</li>
+<li>Côté commutateur : <b>port-security</b>, <b>DHCP snooping</b>, <b>inspection ARP dynamique</b>, et <b>802.1X</b> pour authentifier un poste avant de lui donner le réseau.</li>
+<li><b>NTP</b> fiable : sans horloge commune, les journaux ne se corrèlent pas et Kerberos tombe.</li>
+</ul>
+<p><b>Si un équipement tombe :</b></p>
+<ul>
+<li><b>Redondance de passerelle</b> : VRRP (standard), HSRP (Cisco), CARP (BSD et pfSense). Deux routeurs partagent une adresse virtuelle, le passif reprend. C'est exactement ce que j'ai chiffré pour le second pare-feu.</li>
+<li><b>Stacking</b> pour les commutateurs : plusieurs châssis vus comme un seul équipement logique, une seule configuration, et la pile survit à la perte d'un membre.</li>
+<li><b>LACP</b> pour les liens, <b>RSTP</b> pour éviter les boucles quand on multiplie les chemins.</li>
+<li><b>Double alimentation</b> et onduleur : la panne la plus fréquente n'est pas logicielle.</li>
+<li>Et la configuration <b>sauvegardée hors de l'équipement</b> : remplacer une boîte morte ne sert à rien si la configuration est morte avec elle.</li>
+</ul></div></details>
+  <details class="qa"><summary>Quelle différence entre un commutateur de niveau 2 et de niveau 3 ? Lequel choisiriez-vous ?<span class="tag t-base">BASE</span></summary><div class="a"><p>Un <b>niveau 2</b> commute sur l'adresse MAC, à l'intérieur d'un même domaine de diffusion. Un <b>niveau 3</b> sait en plus router entre réseaux, à la vitesse du matériel, grâce à des interfaces virtuelles (une par VLAN).</p>
+<p><b>Le choix dépend d'une seule question : est-ce que je veux filtrer entre les zones ?</b></p>
+<ul>
+<li>Beaucoup de trafic entre VLAN et peu de contrôle à exercer : un niveau 3 en cœur, c'est rapide et ça décharge le pare-feu.</li>
+<li>Des zones de confiance différentes, à contrôler : on fait remonter le trafic au pare-feu, et des commutateurs de niveau 2 administrables suffisent.</li>
+</ul>
+<p><b>Chez moi :</b> le second cas. Les zones sont séparées justement pour être filtrées, donc le routage inter-zones se fait au pare-feu et j'ai chiffré des niveau 2 administrables PoE+.</p></div></details>
+  <details class="qa"><summary>Vous n'avez pas fait de VLAN. Pourquoi, et comment auriez-vous fait ?<span class="tag t-piege">PIÈGE</span></summary><div class="a"><p>Un <b>VLAN</b> découpe logiquement un même commutateur physique en plusieurs réseaux étanches ; le marquage se fait avec la norme <b>802.1Q</b>, qui ajoute une étiquette dans la trame.</p>
+<p><b>Pourquoi pas ici :</b> la plateforme de virtualisation fournissait des réseaux séparés par des interfaces distinctes. La séparation existait déjà au niveau physique, côté pare-feu : ajouter des VLAN n'aurait rien cloisonné de plus, seulement ajouté une couche à administrer.</p>
+<p><b>Comment je ferais en production :</b> un VLAN par usage - postes, serveurs, téléphonie, impression, administration, zone exposée. Un lien <b>trunk</b> en 802.1Q entre le commutateur et le pare-feu, une sous-interface par VLAN côté pare-feu, et tout le trafic entre VLAN filtré par la matrice de flux.</p>
+<p><b>Le routage inter-VLAN</b> se fait de deux façons : par un commutateur de niveau 3 (rapide, mais sans filtrage fin), ou par le pare-feu sur un seul lien trunk - le montage dit <i>router on a stick</i>. Je choisirais le second, pour la même raison que précédemment : je veux voir et filtrer ce qui passe d'une zone à l'autre.</p></div></details>
+  <details class="qa"><summary>Comment avez-vous segmenté, et pourquoi des /24 plutôt que des /27 ?<span class="tag t-base">BASE</span></summary><div class="a"><p>Un <b>/24</b> offre 254 adresses utilisables, un <b>/27</b> en offre 30. On dimensionne d'abord sur le nombre d'hôtes plus une marge de croissance.</p>
+<p><b>Chez moi :</b> un /24 par zone - LAN Paris, DMZ, LAN Lyon - pour 50 utilisateurs. C'est volontairement large : ça laisse la place à une segmentation future par service sans tout réadresser. Le coût d'un /24 en adressage privé est nul ; le coût d'un réadressage en production ne l'est pas.</p>
+<p>Un découpage en /27 aurait du sens dans une logique de VLAN par service, avec peu d'hôtes dans chacun, pour limiter le domaine de diffusion. La vraie segmentation n'est d'ailleurs pas une affaire de masque : <b>c'est une affaire de zones de confiance et de règles entre elles</b>. Le masque ne fait que les délimiter.</p>
+<p><b>Exception dans mon plan :</b> le tunnel inter-sites est en /30, quatre adresses, parce qu'un lien point à point n'a besoin que de deux adresses utilisables.</p></div></details>
+  <details class="qa"><summary>Comment fonctionne un VPN, en une minute ?<span class="tag t-base">BASE</span></summary><div class="a"><p>Deux extrémités s'authentifient, négocient des clés, puis chiffrent tout ce qui passe entre elles. Le trafic privé traverse un réseau public comme s'il s'agissait d'un câble direct.</p>
+<p>Concrètement : le client contacte le serveur, le serveur présente un <b>certificat</b> signé par une autorité que le client reconnaît ; un échange <b>Diffie-Hellman</b> produit une clé de session que personne n'a transmise sur le réseau ; cette clé chiffre ensuite les données en <b>AES-256-GCM</b>, qui assure aussi l'intégrité. Enfin le serveur <b>pousse une route</b> au client, pour que le trafic destiné au réseau distant emprunte le tunnel.</p>
+<p><b>Les deux usages à distinguer :</b> le tunnel permanent entre deux sites, et l'accès distant ouvert à la demande par un poste - qui, lui, exige d'authentifier un <b>utilisateur</b> et pas seulement une machine.</p></div></details>
+  <h3>Sécurité et filtrage</h3>
+  <details class="qa"><summary>Quelle différence entre un proxy et un reverse proxy ?<span class="tag t-base">BASE</span></summary><div class="a"><p>C'est une question de <b>sens</b>, et de qui il protège.</p>
+<ul>
+<li><b>Proxy</b> (direct) : il se place devant les <b>clients</b> qui sortent. Il filtre, met en cache, journalise les accès, et masque les postes. C'est l'outil du filtrage web et de la traçabilité de la navigation.</li>
+<li><b>Reverse proxy</b> : il se place devant les <b>serveurs</b>, et reçoit les connexions entrantes. Il répartit la charge, termine le TLS en un point unique, cache les serveurs réels, et peut filtrer les requêtes applicatives.</li>
+</ul>
+<p>Moyen mnémotechnique : le proxy protège <b>ceux qui sortent</b>, le reverse proxy protège <b>ceux qu'on expose</b>.</p>
+<p><b>Chez moi :</b> pas de proxy sortant, le filtrage par catégories ayant été écarté. En revanche Nginx en zone exposée joue le rôle de point d'entrée HTTPS unique : si on publiait plusieurs services derrière la même adresse, il deviendrait un vrai reverse proxy, avec terminaison TLS et répartition.</p></div></details>
+  <details class="qa"><summary>Si vous deviez filtrer les pages web des utilisateurs, vous feriez comment ?<span class="tag t-piege">PIÈGE</span></summary><div class="a"><p>Trois approches, de la plus simple à la plus intrusive.</p>
+<ul>
+<li><b>Par le DNS</b> : on empêche la résolution des noms interdits, avec des listes par catégories (le module de blocage par listes du pare-feu, ou un résolveur filtrant du marché). Simple, peu coûteux, mais contournable par qui connaît une adresse IP ou utilise un autre résolveur.</li>
+<li><b>Par un proxy explicite</b> (type Squid avec un moteur de catégories) : le navigateur est configuré pour passer par lui. On filtre sur l'URL complète, on journalise finement, on met en cache. C'est la solution propre en entreprise.</li>
+<li><b>Par inspection TLS</b> : le proxy déchiffre pour voir l'URL complète en HTTPS. Techniquement possible, mais cela suppose de déployer un certificat sur tous les postes et soulève des questions juridiques et de vie privée. À ne proposer qu'avec information des utilisateurs et accord de la direction.</li>
+</ul>
+<p><b>Chez moi :</b> l'exigence figurait au cahier des charges et je l'ai écartée, avec une raison technique précise. Le filtrage par le DNS supposait de faire du pare-feu le résolveur des postes, rôle que doit garder le contrôleur de domaine pour que Kerberos fonctionne. La bonne réponse aurait été un <b>proxy explicite</b>, ou un filtrage posé sur les redirecteurs du contrôleur de domaine. J'ai chiffré la brique à un jour.</p></div></details>
+  <details class="qa"><summary>Qu'est-ce qu'un SIEM, et en avez-vous un ?<span class="tag t-base">BASE</span></summary><div class="a"><p>Un <b>SIEM</b> collecte les journaux de tout le parc, les normalise, les corrèle entre eux et déclenche des alertes de sécurité. Sa valeur est dans la <b>corrélation</b> : un échec d'authentification n'est rien, trois cents en deux minutes depuis la même adresse en sont une.</p>
+<p><b>Chez moi :</b> pas de SIEM, mais la première marche est posée - les journaux sont centralisés sur un collecteur, avec une rotation et une durée de conservation définies. C'est le prérequis : sans collecte centralisée, aucun SIEM ne sert à rien. Je le présente comme l'évolution logique, avec la supervision déjà en place.</p></div></details>
+  <details class="qa"><summary>Que dit le RGPD à un administrateur réseau ? Et la CNIL ?<span class="tag t-base">BASE</span></summary><div class="a"><p>Le <b>RGPD</b> est le règlement européen sur la protection des données personnelles ; la <b>CNIL</b> est l'autorité française qui contrôle son application et peut sanctionner.</p>
+<p>Ce qui touche directement mon métier :</p>
+<ul>
+<li><b>Les journaux de connexion sont des données personnelles</b> - une adresse IP associée à un utilisateur en est une. On ne les garde donc pas indéfiniment.</li>
+<li><b>Minimisation</b> : on ne journalise que ce qui est nécessaire. C'est pour ça que mes journaux enregistrent les blocages et les accès aux services publiés, pas le contenu.</li>
+<li><b>Durée de conservation définie</b>, et accès restreint aux administrateurs.</li>
+<li><b>Sécurité par défaut</b> : le chiffrement des échanges entre sites en fait partie.</li>
+<li><b>Notification sous 72 heures</b> à la CNIL en cas de violation de données.</li>
+</ul>
+<p><b>Chez moi :</b> rotation et durée de conservation définies sur le collecteur, aucun mot de passe ni donnée personnelle dans les captures du dossier, et une fiche de sensibilisation remise aux utilisateurs.</p></div></details>
+  <details class="qa"><summary>Vous connaissez la règle 3-2-1 ?<span class="tag t-base">BASE</span></summary><div class="a"><p><b>Trois</b> copies des données, sur <b>deux</b> supports de nature différente, dont <b>une</b> hors site.</p>
+<p>La version moderne ajoute deux chiffres : <b>3-2-1-1-0</b>. Le quatrième, une copie <b>hors ligne ou immuable</b> - c'est la seule qui résiste à un rançongiciel, qui chiffre aussi les sauvegardes accessibles depuis le réseau. Le dernier, <b>zéro erreur</b> à la restauration, c'est-à-dire des restaurations réellement testées.</p>
+<p><b>Chez moi :</b> la sauvegarde quotidienne existe, la restauration est testée - donc le zéro est tenu. Le hors site et l'immuabilité manquent : c'est honnêtement la première évolution à proposer au client, avant même le second pare-feu.</p></div></details>
+  <h3>Gestion de projet et normes</h3>
+  <details class="qa"><summary>Qu'est-ce qu'un SLA ? Et la différence avec une GTR ?<span class="tag t-base">BASE</span></summary><div class="a"><p>Un <b>SLA</b> est un engagement contractuel de niveau de service : taux de disponibilité, délais de prise en charge et de rétablissement, et les <b>pénalités</b> si l'engagement n'est pas tenu. Sans pénalité, ce n'est pas un SLA, c'est une intention.</p>
+<p>La <b>GTR</b> est l'une de ses composantes : le délai de <b>rétablissement</b>, pas d'intervention. Un opérateur qui promet d'envoyer un technicien sous 4 heures ne promet pas que ça marchera sous 4 heures.</p>
+<p>Le vocabulaire complet : <b>SLI</b> l'indicateur mesuré, <b>SLO</b> l'objectif interne, <b>SLA</b> l'engagement contractuel vis-à-vis du client.</p>
+<p><b>Chez moi :</b> la GTR 4 h de la fibre, chiffrée au devis entre 200 et 400 € par mois et par site. C'est le poste qui surprend le client, et il faut savoir expliquer qu'il paie la garantie et non le débit.</p></div></details>
+  <details class="qa"><summary>Qu'est-ce qu'ITIL ?<span class="tag t-base">BASE</span></summary><div class="a"><p>Un référentiel de bonnes pratiques pour gérer les <b>services</b> informatiques, pas les technologies. Il fournit surtout un vocabulaire commun et des processus.</p>
+<p>Les trois distinctions utiles à connaître :</p>
+<ul>
+<li><b>Incident</b> : rétablir le service le plus vite possible. On ne cherche pas la cause, on rétablit.</li>
+<li><b>Problème</b> : traiter la cause racine pour que l'incident ne revienne pas. C'est un travail de fond, séparé.</li>
+<li><b>Changement</b> : toute modification planifiée, avec évaluation du risque et <b>plan de retour arrière</b>.</li>
+</ul>
+<p><b>Chez moi,</b> sans l'avoir formalisé sous ce nom : mes fiches d'incident suivent cette logique, chaque mise en production a son retour arrière préparé, et le retour d'expérience après incident est exactement la démarche « problème ».</p></div></details>
+  <details class="qa"><summary>Agile ou cycle en V ? Et le RACI, c'est de l'agile ?<span class="tag t-piege">PIÈGE</span></summary><div class="a"><p><b>Agile</b> : on livre par itérations courtes, on montre tôt, on ajuste au fil de l'eau. <b>Cycle en V</b> : on spécifie tout au départ, on développe, puis on valide en remontant - chaque phase de test répond à une phase de spécification.</p>
+<p><b>Chez moi :</b> plutôt un cycle en V allégé. Le cahier des charges était fixé dès le départ, donc on ne le réinventait pas. Mais la livraison a été <b>incrémentale</b> : dix lots, chacun livré avec sa recette, ce qui permettait de montrer et de corriger sans attendre la fin. C'est de l'esprit agile dans un cadre contractuel classique.</p>
+<p><b>Le RACI n'est pas une méthode agile</b> - c'est un outil de répartition des rôles, utilisable avec n'importe quelle méthode. Ne pas les mélanger, le jury le remarquerait.</p></div></details>
+  <details class="qa"><summary>À quoi sert un diagramme de Gantt ?<span class="tag t-base">BASE</span></summary><div class="a"><p>À représenter les tâches dans le temps, leurs durées, leurs chevauchements et leurs dépendances. Il répond à deux questions : <b>quand</b>, et <b>quoi avant quoi</b>.</p>
+<p>Son intérêt réel n'est pas de faire joli : c'est de rendre visibles les dépendances. Si une tâche glisse, on voit immédiatement ce qu'elle entraîne. C'est aussi ce qui permet de défendre un ordre devant un client qui voudrait tout en parallèle.</p>
+<p><b>Chez moi :</b> dix lots sur neuf mois, volontairement chevauchants, avec une règle d'ordonnancement explicite - ce qui débloque le reste passe en premier.</p></div></details>
+  <details class="qa"><summary>PRA, PCA : la différence ?<span class="tag t-base">BASE</span></summary><div class="a"><p>Le <b>PRA</b>, plan de reprise d'activité, décrit comment on <b>redémarre après</b> un sinistre : qui fait quoi, dans quel ordre, avec quels objectifs de RPO et de RTO.</p>
+<p>Le <b>PCA</b>, plan de continuité, vise à ce que le service <b>ne s'arrête pas</b> : infrastructure redondée, voire site de secours actif. Il coûte plusieurs fois plus cher.</p>
+<p><b>Chez moi :</b> un PRA, avec des objectifs mesurés et une restauration réellement testée. Pas de PCA : il n'y a qu'un pare-feu par site, et c'est précisément le point unique de défaillance que le second équipement en CARP aurait supprimé - conçu, chiffré, non déployé.</p></div></details>
+  <details class="qa"><summary>Pourquoi Zabbix plutôt qu'un autre outil de supervision ?<span class="tag t-base">BASE</span></summary><div class="a"><p>Les candidats habituels : Zabbix, Centreon (une surcouche de Nagios), PRTG, Checkmk.</p>
+<p>Zabbix est libre et sans limite de capteurs, son agent est léger et multiplateforme, il gère les modèles et la découverte automatique, et surtout il intègre nativement la chaîne complète : collecte, déclencheur, action, notification, et refermeture automatique de l'alerte.</p>
+<p>Centreon est excellent mais plus lourd à exploiter. PRTG se facture au capteur, ce qui devient cher dès qu'on supervise sérieusement.</p>
+<p><b>La vraie raison dans mon contexte :</b> la plateforme était déjà en place côté équipe, et mon besoin était de prouver la chaîne d'alerte de bout en bout. Changer d'outil n'aurait rien apporté au projet.</p></div></details>
+</section>
+
+<!-- ====================================================== QCM -->
+<section id="qcm">
+  <h2><span class="n">06</span>QCM d'auto-contrôle</h2>
+  <p class="lead">Une seule bonne réponse. Clique : la bonne devient verte, et l'explication s'affiche.</p>
+  <div id="quizbox"></div>
+</section>
+
+<!-- ====================================================== PIEGES -->
+<section id="pieges">
+  <h2><span class="n">07</span>Pièges et réflexes</h2>
+
+  <div class="flag"><b>Ne jamais dire « je ne sais pas » tout court.</b> Dis ce que tu sais, puis comment tu trouverais : « Je n'ai pas la valeur en tête, elle est dans la matrice de flux du dossier. Le principe est le suivant... » Un administrateur n'est pas quelqu'un qui sait tout, c'est quelqu'un qui sait où chercher.</div>
+
+  <div class="flag"><b>Ne jamais présenter une brique non déployée comme déployée.</b> Le dossier distingue ce qui est réalisé de ce qui est conçu et chiffré. Si le jury te pousse, assume : « Celle-là est conçue et chiffrée, pas déployée, pour telle raison. » C'est une réponse de prestataire, pas un aveu.</div>
+
+  <div class="flag"><b>Ne pas réciter la diapo.</b> Le jury l'a sous les yeux. Commente la capture, raconte ce qu'elle prouve. La diapo porte les paramètres, ta voix porte le raisonnement.</div>
+
+  <div class="flag"><b>Si on te coupe pour une question hors périmètre</b> (annuaire, correctifs, sauvegarde applicative, postes) : réponds factuellement et brièvement, puis ramène sur ton périmètre. Ne dis jamais « ce n'est pas moi ».</div>
+
+  <div class="flag"><b>Toujours finir une réponse technique par la conséquence pour le client.</b> Pas « j'ai mis fail2ban à 5 échecs », mais « j'ai mis fail2ban à 5 échecs, ce qui rend la force brute inefficace sans gêner un client qui se trompe de mot de passe ».</div>
+
+  <h3>Les trois erreurs qui m'ont coûté du temps, et ce que j'en dis</h3>
+  <div class="tblwrap"><table>
+    <tr><th style="width:30%">Ce qui a cassé</th><th style="width:34%">Cause</th><th>Ce que j'en ai tiré</th></tr>
+    <tr><td>L'assistant VPN tombe en erreur fatale</td><td>Retour en arrière dans l'assistant, port déjà occupé par le tunnel inter-sites</td><td>Je l'ai configuré à la main, ce qui a évité deux erreurs que l'assistant aurait introduites</td></tr>
+    <tr><td>Le moteur de détection ne redémarre plus</td><td>Erreur de syntaxe dans une règle ajoutée à la main</td><td>Une règle se teste avant d'aller en production ; je suis revenu aux signatures publiques</td></tr>
+    <tr><td>L'Extranet renvoie une erreur de chiffrement</td><td>Règle de publication dupliquée sans changer le port de destination</td><td>Je vérifie désormais les deux extrémités de toute règle de publication</td></tr>
+  </table></div>
+</section>
+
+<!-- ====================================================== COMPETENCES -->
+<section id="comp">
+  <h2><span class="n">08</span>Les dix compétences, et où elles se prouvent</h2>
+  <p class="lead">Si le jury demande « où est la preuve de telle compétence ? », la réponse est ici.</p>
+  <div class="tblwrap"><table>
+    <tr><th style="width:7%">Réf.</th><th style="width:33%">Compétence</th><th>Ce que je montre</th></tr>
+    <tr><td><b>C1</b></td><td>Bonnes pratiques d'administration</td><td>Nomenclature, instantanés, historique de configuration à 30 versions, job de sauvegarde planifié, procédures d'exploitation</td></tr>
+    <tr><td><b>C2</b></td><td>Administrer et sécuriser les réseaux</td><td>Deux pare-feu, refus par défaut, VPN site à site et nomade, blocage géographique, IDS/IPS, publication par NAT</td></tr>
+    <tr><td><b>C3</b></td><td>Administrer et sécuriser les systèmes</td><td>Rôle NPS/RADIUS sur DC1, Extranet Nginx et SFTP chrooté sous Debian, collecteur rsyslog</td></tr>
+    <tr><td><b>C4</b></td><td>Infrastructures virtualisées</td><td>Socle Proxmox VE, dimensionnement des machines, conteneur LXC non privilégié en zone exposée</td></tr>
+    <tr><td><b>C5</b></td><td>Concevoir une solution</td><td>Comparatifs argumentés, schéma, plan d'adressage, matrice de flux, chiffrage détaillé, analyse de risques, et ce qui a été écarté</td></tr>
+    <tr><td><b>C6</b></td><td>Mettre en production</td><td>Sauvegarde et restauration testées des deux côtés, mise en service de la DMZ avec retour arrière préparé, cahier de recette</td></tr>
+    <tr><td><b>C7</b></td><td>Supervision</td><td>Centralisation des journaux, anomalie de surveillance révélée dès la mise en service, supervision active avec alerte provoquée et refermée</td></tr>
+    <tr><td><b>C8</b></td><td>Mesurer le niveau de sécurité</td><td>Cartographie des services, constats classés par criticité, corrections, scan de contrôle, audit d'annuaire avant/après</td></tr>
+    <tr><td><b>C9</b></td><td>Politique de sécurité</td><td>Cloisonnement, blocage géographique, protection contre la force brute, durcissement des accès, fiche de sensibilisation</td></tr>
+    <tr><td><b>C10</b></td><td>Détection et traitement des incidents</td><td>Deux incidents réels, détectés, confinés et documentés selon les six étapes</td></tr>
+  </table></div>
+</section>
+
+<footer class="wrap">
+  <p>Page de révision personnelle - projet FreeMotions. Les chiffres cités correspondent au dossier de projet remis.</p>
+</footer>
+</div>
+
+<script>
+/* ---------- QCM ---------- */
+const QCM=[
+ ["Le pare-feu interroge le serveur RADIUS. Que contient sa réponse ?",
+  ["Le mot de passe de l'utilisateur","Une décision : accepté ou refusé","La liste des groupes du domaine","Un certificat client"],1,
+  "Le pare-feu ne détient jamais de mot de passe. Il relaie la question et applique la décision, tracée en 6272 ou 6273."],
+ ["Quel réseau est utilisé par le tunnel entre Paris et Lyon ?",
+  ["10.8.0.0/24","10.255.255.0/30","172.16.0.0/24","192.168.254.0/24"],1,
+  "10.255.255.0/30 pour le tunnel inter-sites. 10.8.0.0/24 est le réseau des accès nomades."],
+ ["Un RPO de 24 heures signifie :",
+  ["Le service revient en 24 heures","On peut perdre jusqu'à 24 heures de données","La sauvegarde dure 24 heures","Les journaux sont gardés 24 heures"],1,
+  "Le RPO mesure la perte de données en temps. Le temps de retour du service, c'est le RTO."],
+ ["Pourquoi un conteneur LXC plutôt qu'une machine virtuelle en DMZ ?",
+  ["Il est mieux isolé","Il consomme 512 Mo au lieu de 2 Go","Il est plus sécurisé par conception","Il ne partage pas le noyau"],1,
+  "C'est un compromis de mémoire assumé. L'isolation est plus faible, compensée par : non privilégié, aucun accès interne, bannissement automatique."],
+ ["Que fait un IPS qu'un IDS ne fait pas ?",
+  ["Il journalise","Il bloque la source","Il met à jour ses règles","Il analyse le trafic chiffré"],1,
+  "L'IDS détecte et signale, l'IPS décide et bloque. Snort est ici en mode blocage."],
+ ["Pourquoi le contrôleur de domaine doit-il rester le serveur DNS du parc ?",
+  ["Pour accélérer la navigation","Parce que Kerberos dépend de la résolution de noms","Pour filtrer les sites web","Parce que le pare-feu ne sait pas faire de DNS"],1,
+  "C'est la raison pour laquelle le filtrage web par catégories a été écarté : il aurait fallu basculer la résolution vers le pare-feu."],
+ ["Combien de ports sont publiés depuis Internet vers la DMZ ?",
+  ["Un seul","Deux","Quatre","Aucun, tout passe par le VPN"],1,
+  "443 vers l'Extranet et 2222 redirigé vers le 22 du service de transfert de fichiers, tous deux vers 172.16.0.20."],
+ ["Le score PingCastle global se calcule comment ?",
+  ["La somme des quatre indicateurs","La moyenne des quatre","Le maximum des quatre","Le nombre de règles en écart"],2,
+  "C'est le maximum : corriger une catégorie ne fait pas baisser le total si une autre reste haute."],
+ ["Pourquoi centraliser les journaux ailleurs que sur le pare-feu ?",
+  ["Pour gagner de la place disque","Parce qu'ils y sont volatils et effaçables par un attaquant","Parce que le pare-feu ne sait pas les lire","Pour respecter le RGPD"],1,
+  "Les traces doivent quitter l'équipement qui les produit. En prime, la centralisation a révélé une anomalie de surveillance de passerelle."],
+ ["Que prouve une restauration vers un autre emplacement ?",
+  ["Que la sauvegarde est rapide","Qu'on récupère les données sans risquer d'écraser la source","Que le disque est sain","Que le job est planifié"],1,
+  "On ne restaure jamais par-dessus la source avant d'avoir vérifié ce qu'on récupère."],
+ ["Le blocage géographique en sortie sert surtout à :",
+  ["Empêcher les salariés de surfer à l'étranger","Empêcher une machine compromise de joindre son serveur de commande","Réduire la consommation de bande passante","Respecter la réglementation"],1,
+  "C'est l'argument qui surprend le jury, et c'est le bon : le blocage sortant est une mesure anti-exfiltration."],
+ ["Combien de tests de recette sont conformes, et sur combien ?",
+  ["11 sur 12","13 sur 14","14 sur 14","12 sur 13"],1,
+  "13 sur 14. Le seul non conforme est la mise en écoute locale de la base de supervision, reportée avec recommandation."],
+ ["Pourquoi avoir écarté WireGuard ?",
+  ["Trop lent","Il identifie des machines, pas des utilisateurs","Il n'est pas chiffré","Il n'existe pas sur pfSense"],1,
+  "WireGuard authentifie par clé publique de machine ; l'exigence client était une validation sur la base de comptes de l'annuaire."],
+ ["fail2ban bannit après combien d'échecs ici ?",
+  ["3","5","10","Dès le premier"],1,
+  "Cinq échecs consécutifs. Assez pour ne pas gêner un client qui se trompe, assez peu pour rendre la force brute inutile."],
+ ["Que coûte le matériel dans le devis ?",
+  ["4 400 € HT","6 450 € HT","16 950 € HT","23 400 € HT"],1,
+  "6 450 € HT de matériel, 16 950 € HT de main d'œuvre, 23 400 € HT au total, 28 080 € TTC."],
+ ["Qu'est-ce que CARP ?",
+  ["Un protocole de chiffrement","Un mécanisme de redondance entre deux pare-feu","Un format de journal","Un scanner de vulnérabilités"],1,
+  "Deux pare-feu partagent une adresse virtuelle, le passif reprend si l'actif tombe. Écarté ici, mais chiffré à 3 jours plus le matériel."],
+ ["Un audit sans périmètre écrit, c'est :",
+  ["Une bonne pratique agile","Une intrusion","Un audit en boîte noire","Un test de pénétration"],1,
+  "Le périmètre dit ce qui est autorisé, sur quelles adresses, pendant quelle fenêtre. Sans lui, la même commande est une intrusion."],
+ ["Pourquoi le tunnel est-il en UDP plutôt qu'en TCP ?",
+  ["UDP est chiffré, pas TCP","Pour éviter d'encapsuler du TCP dans du TCP","Parce que le pare-feu ne gère que l'UDP","Pour traverser les pare-feu d'entreprise"],1,
+  "Deux couches qui retransmettent en même temps dégradent fortement le débit. On ne bascule en TCP que si le réseau visité bloque l'UDP."],
+ ["Quel est le RTO mesuré pour la configuration du pare-feu ?",
+  ["30 secondes","5 minutes","6 minutes","1 heure"],1,
+  "5 minutes, redémarrage compris, avec un RPO de zéro puisque l'export est fait juste avant l'intervention."],
+ ["Le conteneur de la DMZ est « non privilégié ». Ça veut dire :",
+  ["Il n'a pas accès à Internet","Son root n'est pas le root de l'hôte","Il tourne sans réseau","Il est en lecture seule"],1,
+  "Les identifiants sont décalés : une évasion ne donne pas les droits d'administration sur l'hôte."]
+];
+const box=document.getElementById("quizbox");
+QCM.forEach((q,i)=>{
+  const d=document.createElement("div"); d.className="quiz";
+  const p=document.createElement("p"); p.textContent=(i+1)+". "+q[0]; d.appendChild(p);
+  q[1].forEach((o,j)=>{
+    const b=document.createElement("button"); b.className="opt"; b.textContent=o;
+    b.onclick=()=>{
+      if(d.dataset.done) return;
+      d.dataset.done="1";
+      [...d.querySelectorAll(".opt")].forEach((x,k)=>{ if(k===q[2]) x.classList.add("ok"); });
+      if(j!==q[2]) b.classList.add("bad"); else bumpScore();
+      d.querySelector(".why").classList.add("show");
+    };
+    d.appendChild(b);
+  });
+  const w=document.createElement("div"); w.className="why"; w.textContent=q[3]; d.appendChild(w);
+  box.appendChild(d);
+});
+let score=0;
+function bumpScore(){score++;document.getElementById("score").textContent=score+" / "+QCM.length;}
+document.getElementById("score").textContent="0 / "+QCM.length;
+document.getElementById("nqcm").textContent=QCM.length;
+document.getElementById("nq").textContent=document.querySelectorAll("#jury .qa").length;
+document.getElementById("nd").textContent=document.querySelectorAll("#gloss .def").length;
+document.getElementById("nc").textContent=document.querySelectorAll("#gloss .concept").length;
+
+
+/* ---------- mémoire locale ---------- */
+const MEM={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},
+           set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const KEY='fm-revision-v1';
+let state=MEM.get(KEY,{su:{},plan:{}});
+const hash=t=>{let h=0;for(const c of t)h=(h*31+c.charCodeAt(0))|0;return 'q'+Math.abs(h)};
+
+/* ---------- case « su » sur chaque question ---------- */
+const allQ=[...document.querySelectorAll('details.qa')].filter(d=>d.closest('#jury,#general'));
+allQ.forEach(d=>{
+  const sum=d.querySelector('summary'), id=hash(sum.textContent.trim());
+  d.dataset.id=id;
+  const b=document.createElement('button');
+  b.className='su'; b.title='Marquer comme su'; b.textContent='✓';
+  b.onclick=e=>{e.preventDefault();e.stopPropagation();
+    state.su[id]=!state.su[id]; MEM.set(KEY,state); paintQ(d); paintProg();};
+  sum.appendChild(b);
+  paintQ(d);
+});
+function paintQ(d){const on=!!state.su[d.dataset.id];
+  d.dataset.su=on?'1':'0'; d.querySelector('.su').classList.toggle('on',on);}
+function paintProg(){
+  const n=allQ.filter(d=>state.su[d.dataset.id]).length;
+  document.getElementById('nsu').textContent=n+' / '+allQ.length;
+  document.getElementById('progbar').style.width=(100*n/allQ.length)+'%';
+}
+paintProg();
+
+/* ---------- plan ---------- */
+document.querySelectorAll('[data-plan]').forEach(c=>{
+  c.checked=!!state.plan[c.dataset.plan];
+  c.parentElement.classList.toggle('ok',c.checked);
+  c.onchange=()=>{state.plan[c.dataset.plan]=c.checked;MEM.set(KEY,state);
+    c.parentElement.classList.toggle('ok',c.checked);};
+});
+
+/* ---------- mode flash ---------- */
+const fb=document.createElement('button');
+fb.className='flashbtn'; fb.textContent='Mode flash';
+fb.onclick=()=>openFlash(false);
+document.body.appendChild(fb);
+const fl=document.createElement('div'); fl.id='flash';
+fl.innerHTML='<button class="fclose" aria-label="Fermer">×</button><div class="fcard">'+
+ '<p class="fq"></p><div class="fa"></div>'+
+ '<div class="frow"><button class="rev">Afficher la réponse</button></div>'+
+ '<div class="frow" style="display:none"><button class="again">À revoir</button><button class="ok">Je savais</button></div>'+
+ '<p class="fmeta"></p></div>';
+document.body.appendChild(fl);
+let pool=[],cur=null,onlyTrap=false;
+fl.querySelector('.fclose').onclick=()=>fl.classList.remove('on');
+fl.querySelector('.rev').onclick=()=>{
+  fl.querySelector('.fa').classList.add('on');
+  fl.querySelectorAll('.frow')[0].style.display='none';
+  fl.querySelectorAll('.frow')[1].style.display='flex';
+};
+fl.querySelector('.ok').onclick=()=>{if(cur){state.su[cur.dataset.id]=true;MEM.set(KEY,state);paintQ(cur);paintProg();}next();};
+fl.querySelector('.again').onclick=()=>next();
+function openFlash(trap){onlyTrap=trap;
+  pool=allQ.filter(d=>!state.su[d.dataset.id] && (!trap || d.querySelector('.t-piege')));
+  if(!pool.length) pool=allQ.filter(d=>!trap || d.querySelector('.t-piege'));
+  fl.classList.add('on'); next();}
+function next(){
+  if(!pool.length){fl.querySelector('.fq').textContent='Tout est marqué comme su. Bien joué.';
+    fl.querySelector('.fa').innerHTML='';fl.querySelector('.fmeta').textContent='';
+    fl.querySelectorAll('.frow').forEach(r=>r.style.display='none');return;}
+  const i=Math.floor(Math.random()*pool.length); cur=pool.splice(i,1)[0];
+  const sum=cur.querySelector('summary').cloneNode(true);
+  sum.querySelectorAll('.su,.tag').forEach(x=>x.remove());
+  fl.querySelector('.fq').textContent=sum.textContent.trim();
+  fl.querySelector('.fa').innerHTML=cur.querySelector('.a').innerHTML;
+  fl.querySelector('.fa').classList.remove('on');
+  fl.querySelectorAll('.frow')[0].style.display='flex';
+  fl.querySelectorAll('.frow')[1].style.display='none';
+  fl.querySelector('.fmeta').textContent='Reste '+pool.length+' carte(s) dans ce tour'+(onlyTrap?' · pièges seulement':'');
+  fl.scrollTop=0;
+}
+document.querySelectorAll('[data-flash-trap]').forEach(b=>b.onclick=()=>openFlash(true));
+
+/* ---------- déplier ---------- */
+function toggleAll(open){document.querySelectorAll("#jury .qa").forEach(d=>d.open=open);}
+
+/* ---------- recherche ---------- */
+const input=document.getElementById("q");
+input.addEventListener("input",()=>{
+  const v=input.value.trim().toLowerCase();
+  document.querySelectorAll(".qa,.def,.kpi,.quiz,.concept").forEach(el=>{
+    el.style.display = (!v || el.textContent.toLowerCase().includes(v)) ? "" : "none";
+  });
+  document.querySelectorAll("section").forEach(s=>{
+    const vis=[...s.querySelectorAll(".qa,.def,.kpi,.quiz,.concept")].some(e=>e.style.display!=="none");
+    const has=s.querySelector(".qa,.def,.kpi,.quiz,.concept");
+    s.style.display = (!v || !has || vis) ? "" : "none";
+  });
+});
+</script>
+</body>
+</html>
